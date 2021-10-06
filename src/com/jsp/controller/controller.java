@@ -31,7 +31,9 @@ import org.apache.tomcat.util.codec.binary.StringUtils;
 import com.jsp.beans.detailsRegister;
 import com.jsp.classes.MyReport;
 import com.jsp.classes.OverAllPosts;
+import com.jsp.classes.SuggestionClass;
 import com.jsp.classes.commnetModel;
+import com.jsp.classes.registrationClass;
 import com.jsp.classes.blobModel;
 import com.jsp.util.DbConnection;
 
@@ -46,6 +48,7 @@ public class controller {
 	private String base64Image="";
 	private String self="";
 	private int ImpId;
+	private int Identify;
     public controller(){
     	
     }
@@ -91,14 +94,11 @@ public class controller {
 				detailsRegister d=new detailsRegister(uId,fullname,Email,mobile,gen,rol);
 				System.out.println(d.toString());
 				l.add(d);
-				Cookie ck16=new Cookie("name",fullname);
-				Cookie ck17=new Cookie("email",Email);
 				String id=String.valueOf(uId);
 				Cookie ck18=new Cookie("Id",id);
 				Cookie ck19=new Cookie("roles",rol);
-				response.addCookie(ck16);
-				response.addCookie(ck17);
 				response.addCookie(ck18);
+				response.addCookie(ck19);
 			}
 			System.out.println(uId);
 			request.setAttribute("details", l);
@@ -267,9 +267,6 @@ public class controller {
 			if(ck[i].getName().equals("Id")){
 				useId=Integer.parseInt(ck[i].getValue());
 			}
-			if(ck[i].getName().equals("name")){
-				self=ck[i].getValue();
-			}
 		}
 		request.setAttribute("userId", useId);
 		Statement stmt=con.createStatement();
@@ -278,9 +275,12 @@ public class controller {
 			int rId=rs.getInt("rId");
 			int userId=rs.getInt("userId");
 			String issue=rs.getString("issue");
-			MyReport r=new MyReport(rId,userId,issue);
+			MyReport r=new MyReport(rId,userId,issue," ");
 			l.add(r);
 		}
+		ResultSet rw=stmt.executeQuery("select fullname from registration where userId='"+useId+"'");
+		rw.next();
+		self=rw.getString("fullname");
 		request.setAttribute("ReportList", l);
 		request.setAttribute("name", self);
 		RequestDispatcher dispatcher=request.getRequestDispatcher("/MyReports.jsp");
@@ -296,6 +296,100 @@ public class controller {
     		response.sendRedirect("MyReports");
     		request.setAttribute("success", "Report posted successfully");
     	}
+    }
+    public void profile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
+    	List<registrationClass> l=new ArrayList<>();
+    	Cookie ck[]=request.getCookies();
+		for(int i=0;i<ck.length;i++){
+			if(ck[i].getName().equals("Id")){
+				Identify=Integer.parseInt(ck[i].getValue());
+			}
+		}
+		Statement stmt=con.createStatement();
+		ResultSet rs=stmt.executeQuery("select * from registration where userId='"+Identify+"'");
+		rs.next();
+		int id=rs.getInt("userId");
+		String fullname=rs.getString("fullname");
+		String email=rs.getString("email");
+		String mobile=rs.getString("mobileNumber");
+		String gender=rs.getString("gender");
+		String role=rs.getString("roles");
+		registrationClass r=new registrationClass(id,fullname,email,mobile,gender,role);
+		l.add(r);
+		request.setAttribute("userDetails", l);
+		
+		RequestDispatcher dispatcher=request.getRequestDispatcher("/profile.jsp");
+		dispatcher.forward(request,response);
+    }
+    public void editUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
+    	int id=Integer.parseInt(request.getParameter("id"));
+    	String name=request.getParameter("name");
+    	String email=request.getParameter("email");
+    	String phone=request.getParameter("phone");
+    	String gend=request.getParameter("gend");
+    	Statement stmt=con.createStatement();
+    	int i=stmt.executeUpdate("update registration set fullname='"+name+"',email='"+email+"',mobileNumber='"+phone+"',gender='"+gend+"' where userId="+id+"");
+    	if(i>0){
+    		response.sendRedirect("profileServlet");
+    	}
+    }
+    public void getAllReports(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
+    	List<MyReport> l=new ArrayList<>();
+    	Statement stmt=con.createStatement();
+    	Statement stmt2=con.createStatement();
+    	ResultSet rs=stmt.executeQuery("select * from issues");
+    	while(rs.next()){
+    		int rId=rs.getInt("rId");
+    		int userId=rs.getInt("userId");
+    		String issue=rs.getString("issue");
+    		ResultSet rw=stmt2.executeQuery("select fullname from registration where userId='"+userId+"'");
+    		rw.next();
+    		String name=rw.getString("fullname");
+    		MyReport r=new MyReport(rId,userId,issue,name);
+    		l.add(r);
+    	}
+    	request.setAttribute("AllReports", l);
+    	RequestDispatcher dispatcher=request.getRequestDispatcher("/Reports.jsp");
+		dispatcher.forward(request,response);
+    }
+    public void suggestToReport(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
+    	int rId=Integer.parseInt(request.getParameter("rId"));
+    	int userId=Integer.parseInt(request.getParameter("userId"));
+    	String suggest=request.getParameter("suggest");
+    	Statement stmt=con.createStatement();
+    	int i=stmt.executeUpdate("insert into suggestions (rId,userId,suggestion) values ('"+rId+"','"+userId+"','"+suggest+"')");
+    	if(i>0){
+    		response.sendRedirect("AllReports");
+    		System.out.println("Suggestions saved");
+    	}
+    }
+    public void getAllSuggestions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
+    	List<SuggestionClass> l=new ArrayList<>();
+    	int rId=Integer.parseInt(request.getParameter("id"));
+    	Statement stmt=con.createStatement();
+    	Statement stmt2=con.createStatement();
+    	Statement stmt3=con.createStatement();
+    	ResultSet rs=stmt.executeQuery("select * from suggestions where rId='"+rId+"'");
+    	while(rs.next()){
+    		int userId=rs.getInt("userId");
+    		String suggest=rs.getString("suggestion");
+    		ResultSet rw=stmt2.executeQuery("select fullname from registration where userId='"+userId+"'");
+    		rw.next();
+    		String name=rw.getString("fullname");
+    		SuggestionClass s=new SuggestionClass(userId,suggest,name);
+    		System.out.println(s.toString());
+    		l.add(s);
+    	}
+    	System.out.println(l);
+    	ResultSet rq=stmt3.executeQuery("select *  from issues where rId='"+rId+"'");
+    	rq.next();
+    	String issue=rq.getString("issue");
+    	System.out.println("issue : "+issue);
+    	request.setAttribute("suggestionList", l);
+    	request.setAttribute("issue", issue);
+    	RequestDispatcher dispatcher=request.getRequestDispatcher("/suggestions.jsp");
+		dispatcher.forward(request,response);
+    	
     }
 
 }

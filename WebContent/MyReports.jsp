@@ -26,7 +26,7 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<title>Insert title here</title>
+<title>My Reports</title>
 <style>
 	body{
 		background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgHLPl07I1rQ2sMiWOrvsiUHtu5DMh8jcKvA&usqp=CAU");
@@ -123,7 +123,7 @@
 			<hr style="color:black;">
 			<hr style="color:black;">
 			<div class="form-group comment">
-				<a href="#">View All Suggestions</a>
+				<a href="">View All Suggestions</a>
 			</div>
 		</div>
 </c:forEach>

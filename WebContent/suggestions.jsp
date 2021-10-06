@@ -31,7 +31,7 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<title>Comments</title>
+<title>Suggestions</title>
 <style>
 	body{
 		background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgHLPl07I1rQ2sMiWOrvsiUHtu5DMh8jcKvA&usqp=CAU");
@@ -131,28 +131,21 @@
 </style>
 </head>
 <body>
-
 <div class="container" style="color:white; cursor:pointer;">
-	<a href="homeServlet" class="atag"><span class="glyphicon" style="color:white;">&#xe091;</span> Back</a>
+	<a href="AllReports" class="atag"><span class="glyphicon" style="color:white;">&#xe091;</span> Back</a>
 </div>
-<c:forEach var="st" items="${post}">
-		<div class="box">
-			<div class="form-group">
-				<h5 class="tag">${st.getTagLine()}</h5>
-			</div>
-			<div class="form-group">
-				<img src="data:;base64,${st.getFileStore()}"/>
-			</div>
-			<hr style="color:black;">
-			<hr style="color:black;">
-			<label for="comment">Comments </label>
-			<c:forEach var="it" items="${comments}">
-				<div class="comments">
-					<h4 style="color:red;">${it.getUserName()}</h4>
-					<p style="color:green;">${it.getReply()}</p>
-				</div>
-			</c:forEach>
+<div class="box">
+	<div class="form-group">
+		<h5 class="tag">${issue}</h5>
+	</div>
+	<hr style="color:black;">
+	<label for="comment">Suggestions </label>
+	<c:forEach var="it" items="${suggestionList}">
+		<div class="comments">
+			<h4 style="color:red;">${it.getName()}</h4>
+			<p style="color:green;">${it.getSuggestion()}</p>
 		</div>
-</c:forEach>
+	</c:forEach>
+</div>
 </body>
 </html>

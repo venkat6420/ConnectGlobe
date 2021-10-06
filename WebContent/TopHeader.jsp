@@ -8,19 +8,26 @@
 <link href="../home.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
- <style><%@include file="../home.css"%></style> 
+ <style><%@include file="../home.css"%>
+ 	.log{
+ 		position:relative;
+ 		float:right;
+ 		right:10px;
+ 	}
+ 	
+ </style> 
 </head>
 <body>
 <%@ include file="heading.jsp" %> 
  
 <div class="topnav">
-  <a class="active" href="homeServlet">Home</a>
+  	<a class="active" href="homeServlet">Home</a>
     <a href="MyPosts">MyPosts</a>
-  
-  <a href="#">Problems</a>
+  	<a href="AllReports">Problems</a>
     <a href="MyReports">MyProblems</a>
-    <a href="#about">Profile</a>
-  
+    <a href="profileServlet">Profile</a>
+    <a class="log" href="Login.jsp">Logout</a>
+    
 </div>
 </body>
 </html>
