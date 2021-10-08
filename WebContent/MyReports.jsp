@@ -111,6 +111,9 @@
 </head>
 <body>
 <%@ include file="TopHeader.jsp" %>
+<div class="uPost" data-toggle="modal" data-target="#myModal" data-id="${userId}">
+			<button class="btn-primary"><i class="material-icons" style="font-size:30px">playlist_add</i> <h5><b>Report Your Issue</b></h5></button>
+</div>
 <c:forEach var="st" items="${ReportList}">
 		<div class="box">
 			<div class="form-group name">
@@ -127,5 +130,36 @@
 			</div>
 		</div>
 </c:forEach>
+<div class="modal fade" id="myModal" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" style="color:black;" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Report Your Issue</h4>
+				</div>
+				<div class="modal-body">
+					<form class="btm" action="uploadReport" method="post">
+						<br>
+						<label for="Upload">Report : </label><br>
+						<textarea class="form-control" rows="6" cols="30" name="issue" placeholder="Enter your issue.." required></textarea>
+						<p style="display:none;">
+							<input type="text" name="userId" id="uId" value="">
+						</p> <br>
+						<button class="btn btn-success">Upload</button><br><br>
+					</form>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+	$(".uPost").click(function() {
+		var id = $(this).data("id");
+		$("#uId").val(id);
+	});
+	</script>
 </body>
 </html>

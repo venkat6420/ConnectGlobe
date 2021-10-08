@@ -90,7 +90,7 @@
 				</div>
 				<div class="modal-body">
 					<form class="btm" action="Edit" method="post">
-						<p>
+						<p style="display:none;">
 							<input type="text" name="id" id="uId" value="">
 						</p>
 						<label>Name : </label><input type="text" name="name" id="nam" value=""><br>

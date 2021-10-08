@@ -105,7 +105,7 @@ public class controller {
 			response.sendRedirect("homeServlet");
 		}else{
 			request.setAttribute("error","Invalid Password or invalid username!!");
-			RequestDispatcher dispatcher=request.getRequestDispatcher("/index.html");
+			RequestDispatcher dispatcher=request.getRequestDispatcher("/Login.jsp");
 			dispatcher.forward(request,response);
 		}
     }
@@ -390,6 +390,16 @@ public class controller {
     	RequestDispatcher dispatcher=request.getRequestDispatcher("/suggestions.jsp");
 		dispatcher.forward(request,response);
     	
+    }
+    public void uploadReport(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
+    	int userId=Integer.parseInt(request.getParameter("userId"));
+    	String issue=request.getParameter("issue");
+    	Statement stmt=con.createStatement();
+    	int i=stmt.executeUpdate("insert into issues (userId,issue) values ('"+userId+"','"+issue+"')");
+    	if(i>0){
+    		response.sendRedirect("MyReports");
+    		request.setAttribute("success", "Report posted successfully");
+    	}
     }
 
 }

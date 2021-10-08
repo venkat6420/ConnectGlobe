@@ -32,6 +32,7 @@ border-radius:15%;
 <div class="bod">
 <div class="container my-5 con">
 <h1>Login</h1>
+<h5 style="color:red;">${error}</h5>
 <form action="loginServlet" method="post">
 <table class="center">
 <tr><td>User Name :</td><td><input type="text" name="email" /></td></tr>

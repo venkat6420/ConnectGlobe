@@ -151,7 +151,7 @@
 				</div>
 				<div class="modal-body">
 					<form action="commentServlet" method="post">
-						<p>
+						<p style="display:none;">
 							<input type="text" name="postId" id="pId" value="">
 							<input type="text" name="userId" id="useId" value="">
 						</p><br>
