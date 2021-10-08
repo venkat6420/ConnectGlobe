@@ -42,8 +42,11 @@ border-radius:15%;
 <tr><td>Gender :</td><td><input type="radio" name="gender" value="male" required> Male</td><td><input type="radio" name="gender" value="female"> Female</td></tr>
 <tr><td></td><td><input type="hidden" name="role" value="user"></td></tr>
 <tr><td colspan="2"><input type="submit" value="Register"/></td></tr>
-
-
+<!--  
+git add .
+git commit -m "second"
+git push origin ajithBondada
+-->
 </table>
 </form></div></div>
 </body>
