@@ -209,12 +209,12 @@ public class GlobeController {
 		
 		List<UserModel> q = service.getProfileDetails(qids);
 		
-		
 		ModelAndView mav= new ModelAndView("/profile");
 		mav.addObject("userDetails",q);
 		
 		return mav;
 	}
+	
 	@PostMapping("/Edit")
 	public ModelAndView profileeditdetails(@RequestParam("id") int id,@RequestParam("name") String name,@RequestParam("password") String password,@RequestParam("phone") String phone)
 	{
@@ -230,5 +230,6 @@ public class GlobeController {
 	ModelAndView mav= new ModelAndView("/profile");
 	mav.addObject("userDetails",q);
 	return mav;
+	}
 }
-}
+

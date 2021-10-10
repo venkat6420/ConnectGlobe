@@ -26,7 +26,7 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<title>Insert title here</title>
+<title>Profile </title>
 <style>
 	.drop{
 		position:relative;
@@ -74,7 +74,7 @@
 			<div class="form-group">
 				<button class="btn btn-primary commit" data-toggle="modal"
 					data-target="#myModal1" data-id="${st.getFullname()}"
-					data-id2="${st.getPassword()()}" data-id3="${st.getMobileNumber()}"
+					data-id2="${st.getPassword()}" data-id3="${st.getMobileNumber()}"
 					data-id4="${st.getGender()}" data-id5="${st.getUserId()}">Edit Profile</button>
 			</div>
 		</div>
@@ -89,11 +89,12 @@
 					
 				</div>
 				<div class="modal-body">
-					<form class="btm" action="#" method="post">
+					<form class="btm" action="/Edit" method="post">
 						<p style="display:none;">
 							<input type="text" name="id" id="uId" value="">
 						</p>
 						<label>Name : </label><input type="text" name="name" id="nam" value="" ><br>
+						<label>Password : </label><input type="text" name="password" id="password" value=""><br>
 						<label>Phone : </label><input type="text" name="phone" id="phon" value="" ><br>
 						<button class="btn btn-success">Edit</button><br><br>
 					</form>

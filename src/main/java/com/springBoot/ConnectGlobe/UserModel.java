@@ -46,6 +46,7 @@ public class UserModel {
 		this.userId=qids;
 		// TODO Auto-generated constructor stub
 	}
+	
 	public boolean isActive() {
 		return active;
 	}
