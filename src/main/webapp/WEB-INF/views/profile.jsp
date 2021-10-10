@@ -57,7 +57,7 @@
 		<div class="container drop">
 			<div class="form-group">
 				<i class="material-icons" style="font-size: 150px; color: grey">account_circle</i>
-				</p>
+				
 			</div>
 			<div class="form-group">
 				<label>Name : </label>${st.getFullname()}
@@ -74,8 +74,8 @@
 			<div class="form-group">
 				<button class="btn btn-primary commit" data-toggle="modal"
 					data-target="#myModal1" data-id="${st.getFullname()}"
-					data-id2="${st.getEmail()}" data-id3="${st.getMobileNumber()}"
-					data-id4="${st.getGender()}" data-id5="${st.getUserId()()}">Edit Profile</button>
+					data-id2="${st.getPassword()()}" data-id3="${st.getMobileNumber()}"
+					data-id4="${st.getGender()}" data-id5="${st.getUserId()}">Edit Profile</button>
 			</div>
 		</div>
 	</c:forEach>
@@ -89,14 +89,12 @@
 					
 				</div>
 				<div class="modal-body">
-					<form class="btm" action="Edit" method="post">
+					<form class="btm" action="#" method="post">
 						<p style="display:none;">
 							<input type="text" name="id" id="uId" value="">
 						</p>
-						<label>Name : </label><input type="text" name="name" id="nam" value=""><br>
-						<label>Email : </label><input type="text" name="email" id="emai" value=""><br>
-						<label>Phone : </label><input type="text" name="phone" id="phon" value=""><br>
-						<label>gender : </label><input type="text" name="gend" id="gen" value=""><br>
+						<label>Name : </label><input type="text" name="name" id="nam" value="" ><br>
+						<label>Phone : </label><input type="text" name="phone" id="phon" value="" ><br>
 						<button class="btn btn-success">Edit</button><br><br>
 					</form>
 					<div class="modal-footer">
@@ -109,15 +107,14 @@
 	<script>
 	$(".commit").click(function() {
 		var nam = $(this).data("id");
-		alert(nam);
-		var emai=$(this).data("id2");
+		var pssword=$(this).data("id2");
 		var mobil=$(this).data("id3");
-		var gen=$(this).data("id4");
+		//var gen=$(this).data("id4");
 		var id=$(this).data("id5");
 		$("#nam").val(nam);
-		$("#emai").val(emai);
+		$("#password").val(password);
 		$("#phon").val(mobil);
-		$("#gen").val(gen);
+	//	$("#gen").val(gen);
 		$("#uId").val(id);
 	});
 	</script>

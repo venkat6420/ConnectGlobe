@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletRequest;
@@ -23,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -67,9 +69,10 @@ public class GlobeController {
 	public String registerrr(Model m) {
 		m.addAttribute("register",new UserModel());
 		return "Registration";
+		
 	}
 	@PostMapping("/save")
-	public String saveToRegister(@ModelAttribute("register") UserModel m) {
+	public ModelAndView saveToRegister(@ModelAttribute("register") UserModel m) {
 		List<UserModel> l=new ArrayList<>();
 //		String fullname=request.getParameter("username");
 //		String email=request.getParameter("email");
@@ -83,10 +86,13 @@ public class GlobeController {
 		CredentialModel data=new CredentialModel(username,password,roles);
 		UserModel u=service.saveToUser(m);
 		CredentialModel c=service.saveToCredential(data);
-		return "Login";
+		ModelAndView mav = new ModelAndView("/Registration");
+		mav.addObject("success", "SuccesFully Registered and Click Login Button");
+		return mav;
+		
 	}
-	@PostMapping(value = "/login", produces = "application/json")
-	public ModelAndView createAuthenticationToken(@RequestParam("email") String email,@RequestParam("psw") String password,HttpSession session) throws Exception{
+	@PostMapping(value = "/login",produces = "application/json")
+	public ModelAndView createAuthenticationToken(@RequestParam("email") String email,@RequestParam("psw") String password,HttpSession session,ModelMap modelMap) throws Exception{
 		System.out.println("authenticated");
 		AuthenticationRequest a=new AuthenticationRequest(email,password);
 		System.out.println(a.getUsername());
@@ -95,8 +101,12 @@ public class GlobeController {
 					new UsernamePasswordAuthenticationToken(a.getUsername(),a.getPassword())
 				);
 		}catch(BadCredentialsException e) {
+			ModelAndView mav = new ModelAndView("/Login");
+			mav.addObject("error", "Invalid username and password!");
+			return mav;
 //			return "Invalid username or password";
-			throw new Exception("Incorrect Username or passowrd");
+		
+			//throw new Exception("Incorrect Username or passowrd");
 		}
 		System.out.println("done...");
 		final UserDetails userDetails=userDetailsService.loadUserByUsername(a.getUsername());
@@ -125,6 +135,7 @@ public class GlobeController {
 			return mo;
 		}
 	}
+	
 	@GetMapping("/MyPosts")
 	public ModelAndView getMyPosts() throws UnsupportedEncodingException {
 		
@@ -195,10 +206,29 @@ public class GlobeController {
 	@GetMapping("/Profile")
 	public ModelAndView MyProfile()
 	{
-		UserModel q = service.getProfileDetails(qids);
+		
+		List<UserModel> q = service.getProfileDetails(qids);
+		
+		
 		ModelAndView mav= new ModelAndView("/profile");
 		mav.addObject("userDetails",q);
+		
 		return mav;
 	}
-	
+	@PostMapping("/Edit")
+	public ModelAndView profileeditdetails(@RequestParam("id") int id,@RequestParam("name") String name,@RequestParam("password") String password,@RequestParam("phone") String phone)
+	{
+	UserModel u =new UserModel(id,name ,password, phone);
+	UserModel u1= new UserModel(qids);
+	u.setEmail(u1.getEmail());
+	u.setPassword(u1.getPassword());
+	u.setRoles(u1.getRoles());
+	System.out.println(u);
+	UserModel newusermodel = service.saveToUser(u);
+	System.out.println(newusermodel);
+	List<UserModel> q = service.getProfileDetails(qids);
+	ModelAndView mav= new ModelAndView("/profile");
+	mav.addObject("userDetails",q);
+	return mav;
+}
 }

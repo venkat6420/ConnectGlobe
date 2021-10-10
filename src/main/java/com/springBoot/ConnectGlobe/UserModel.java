@@ -34,6 +34,18 @@ public class UserModel {
 		super();
 	}
 	
+	public UserModel(int id, String name, String password, String phone) {
+		this.userId = id;
+		this.fullname = name;
+		
+		this.password = password;
+		this.mobileNumber = phone;
+		
+	}
+	public UserModel(int qids) {
+		this.userId=qids;
+		// TODO Auto-generated constructor stub
+	}
 	public boolean isActive() {
 		return active;
 	}

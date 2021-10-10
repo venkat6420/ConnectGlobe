@@ -43,6 +43,7 @@ public class GlobeService implements UserDetailsService{
 	public UserModel saveToUser(UserModel model) {
 		model.setPassword(passwordEncoder.encode(model.getPassword()));
 		UserModel u=repop.save(model);
+		
 		return u;
 	}
 	public CredentialModel saveToCredential(CredentialModel model) {
@@ -147,11 +148,12 @@ public class GlobeService implements UserDetailsService{
 		return l;
 				
 	}
-	public UserModel getProfileDetails(int Uid)
+	public List<UserModel> getProfileDetails(int Uid)
 	{
-		
+		List<UserModel> l= new ArrayList<>();
 		UserModel q=repop.getById(Uid);
-		return q;
+		l.add(q);
+		return l;
 	}
 	
 }
