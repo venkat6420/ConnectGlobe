@@ -1,0 +1,40 @@
+1.create table connectglobe.registration(
+userId int(11) auto_increment primary key,
+fullname varchar(99),
+email varchar(99),
+password varchar(99),
+mobileNumber varchar(99),
+gender varchar(10),
+roles varchar(99)
+);
+2.create table connectglobe.posts(
+pId int auto_increment,
+userId int not null,
+fileStore longblob,
+tagLine mediumText,
+primary key(pId),
+constraint posts foreign key(userId) references connectglobe.registration(userId)
+);
+3.create table connectglobe.answersTable(
+cId int auto_increment,
+pId int not null,
+userId int not null,
+reply Longtext,
+primary key(cId),
+constraint comments foreign key (pId) References posts(pId)
+);
+4.create table issues(
+rId int auto_increment,
+userId int not null,
+issue longtext,
+primary key(rId),
+constraint issues foreign key (userId) References registration(userId)
+);
+5.create table connectglobe.suggestions(
+sId int auto_increment,
+rId int not null,
+userId int not null,
+suggestion longtext,
+primary key(sId),
+constraint suggestions foreign key(rId) References issues(rId)
+);
