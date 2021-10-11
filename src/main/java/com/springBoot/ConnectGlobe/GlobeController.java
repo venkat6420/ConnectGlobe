@@ -230,6 +230,7 @@ public class GlobeController {
 	ModelAndView mav= new ModelAndView("/profile");
 	mav.addObject("userDetails",q);
 	return mav;
+	
 	}
 }
 
