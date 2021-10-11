@@ -28,6 +28,9 @@ public class MyReportEntity {
 		return rId;
 	}
 
+	
+	
+	
 	public void setrId(int rId) {
 		this.rId = rId;
 	}
