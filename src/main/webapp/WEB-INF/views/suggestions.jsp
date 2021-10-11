@@ -28,8 +28,7 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<title>Connect Globe Home</title>
+<title>Suggestions</title>
 <style>
 	body{
 		background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgHLPl07I1rQ2sMiWOrvsiUHtu5DMh8jcKvA&usqp=CAU");
@@ -64,9 +63,6 @@
 	.modal-header{
 		background-color:lightgreen;
 		color:black;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
 	}
 	.box{
 		width:800px;
@@ -83,7 +79,7 @@
 	.box:hover{
     	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	}
-	.image{
+	img{
 		width:650px;
 		height:350px;
 		position:relative;
@@ -108,75 +104,45 @@
 		display:flex;
 		flex-direction:row;
 	}
-	#le{
-		
+	.comments{
+		width:50%;
+		height:auto;
+		border-radius:10px;
+		background-color:lightgrey;
+		float:left;
+		position:relative;
+		left:20px;
+		margin-bottom:20px;
+		padding-left:20px;
+		color:white;
 	}
-	
-	
+	.comments:hover{
+    	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	}
+	.atag {
+		color:white;
+	}
+	.atag:hover{
+		color:white;
+	}
 </style>
 </head>
 <body>
-<c:if test = "${Roles.getRoles() == 'ROLE_USER'}">
-	<%@ include file="TopHeader.jsp" %>
-</c:if>
-<c:if test = "${Roles.getRoles() == 'ROLE_ADMIN'}">
-	<%@ include file="AdminHeader.jsp" %>
-</c:if>
-<c:forEach var="st" items="${AllPosts}">
-	<%
-		String id=(String)session.getAttribute("userId");
-		Cookie ck=new Cookie("userId",id);
-		response.addCookie(ck);
-	%>
-		<div class="box">
-			<div class="form-group name">
-				<p><i class="material-icons" style="font-size:36px;color:grey">account_circle</i></p>
-				<h4> ${st.getName()}</h4>
-			</div>
-			<div class="form-group">
-				<h5 class="tag">${st.getTag()}</h5>
-			</div>
-			<div class="form-group">
-				<img class="image" src="data:;base64,${st.getImage()}"/>
-			</div>
-			<hr style="color:black;">
-			<hr style="color:black;">
-			<div class="form-group comment">
-				<a class="commit" data-toggle="modal" data-target="#myModal1" data-id="${st.getpId()}" >Comment</a>
-				<a href="AllComments/${st.getpId()}">View All Comments</a>
-			</div>
-		</div>
-</c:forEach>
-	<!-- Comment Modal -->
-	<div class="modal fade" id="myModal1" role="dialog">
-		<div class="modal-dialog">
-			<!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-header">
-					<h3 class="modal-title" id="le">Comment To Post</h3>
-					<button type="button" class="close" style="color:black;" data-dismiss="modal">&times;</button>
-				</div>
-				<div class="modal-body">
-					<form action="comment" method="post">
-						<p >
-							<input type="text" name="postId" id="pId" value="">
-						</p><br>
-						<textarea class="form-control" rows="6" cols="30" name="comment" placeholder="Enter comment to post" required></textarea>
-						<br>
-						<button class="btn btn-primary">Comment</button><br><br>
-					</form>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
+<div class="container" style="color:white; cursor:pointer;">
+	<a href="/return" class="atag"><span class="glyphicon" style="color:white;">&#xe091;</span> Back</a>
+</div>
+<div class="box">
+	<div class="form-group">
+		<h5 class="tag">${Report.getIssue()}</h5>
 	</div>
-<script>
-$(".commit").click(function() {
-	var id = $(this).data("id");
-	$("#pId").val(id);
-});
-</script>
+	<hr style="color:black;">
+	<label for="comment">Suggestions </label>
+	<c:forEach var="it" items="${suggestions}">
+		<div class="comments">
+			<h4 style="color:red;">${it.getName()}</h4>
+			<p style="color:green;">${it.getSuggest()}</p>
+		</div>
+	</c:forEach>
+</div>
 </body>
 </html>

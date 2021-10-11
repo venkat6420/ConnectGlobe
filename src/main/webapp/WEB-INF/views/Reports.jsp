@@ -3,12 +3,10 @@
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%-- <%@ page trimDirectiveWhitespaces="true" %> --%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Posts</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -31,6 +29,7 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+<title>Reports</title>
 <style>
 	body{
 		background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgHLPl07I1rQ2sMiWOrvsiUHtu5DMh8jcKvA&usqp=CAU");
@@ -81,7 +80,7 @@
 	.box:hover{
     	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	}
-	.mag{
+	.image{
 		width:650px;
 		height:350px;
 		position:relative;
@@ -106,102 +105,56 @@
 		display:flex;
 		flex-direction:row;
 	}
-	.uPost{
-		border-radius:20px;
-		padding:20px;
-		float:right;
+	#le{
 		position:relative;
-		right:10px;
-		top:10px;
+		float:left;
 	}
-	#delete{
+	#space{
 		position:relative;
-		top:10px;
-		left:700px;
+		left:40px;
 	}
-	
 </style>
 </head>
 <body>
-	<c:if test = "${userModel.getRoles() == 'ROLE_USER'}">
-		<%@ include file="TopHeader.jsp" %>
-	</c:if>
-	<c:if test = "${userModel.getRoles() == 'ROLE_ADMIN'}">
-		<%@ include file="AdminHeader.jsp" %>
-	</c:if>
-	<div class="uPost" data-toggle="modal" data-target="#myModal" data-id="${userModel.getUserId()}">
-			<button class="btn-primary"><i class="material-icons" style="font-size:30px">playlist_add</i> <h5><b>Upload New Post</b></h5></button>
-	</div>
-	<br><br><br><br><br>
-	<c:forEach var="st" items="${MyPosts}">
+<c:if test = "${Roles.getRoles() == 'ROLE_USER'}">
+	<%@ include file="TopHeader.jsp" %>
+</c:if>
+<c:if test = "${Roles.getRoles() == 'ROLE_ADMIN'}">
+	<%@ include file="AdminHeader.jsp" %>
+</c:if>
+<c:forEach var="st" items="${AllReports}">
 		<div class="box">
-			<div class="form-group" id="delete">
-				<a href="/deletePost/${st.getpId()}">
-          			<span class="glyphicon glyphicon-trash"></span>
-        		</a>
-			</div>
 			<div class="form-group name">
-				<i class="material-icons" style="font-size:36px;color:grey">account_circle</i></p>
+				<p><i class="material-icons" style="font-size:36px;color:grey">account_circle</i></p>
 				<h4> ${st.getName()}</h4>
 			</div>
-			<div class="form-group">
-				<h5 class="tag">${st.getTag()}</h5>
-			</div>
-			<div class="form-group">
-				<img class="mag" src="data:;base64,${st.getImage()}"/>
+			<div id="space" class="form-group">
+				<h4>${st.getIssue()}</h4>
 			</div>
 			<hr style="color:black;">
 			<hr style="color:black;">
 			<div class="form-group comment">
-				<%-- <a class="commit" data-toggle="modal" data-target="#myModal1" data-id="${st.getpId()}" data-id2="${st.getUserId()}">Comment</a> --%>
-				<a href="AllComments/${st.getpId()}">View All Comments</a>
-			</div>
-		</div> 
-	</c:forEach>
-	<div class="modal fade" id="myModal" role="dialog">
-		<div class="modal-dialog">
-			<!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" style="color:black;" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Upload a Post</h4>
-				</div>
-				<div class="modal-body">
-					<form class="btm" enctype="multipart/form-data" action="/upload" method="post">
-						<br>
-						<label for="Upload">Upload Data : </label>
-						<input class="file" type="file" name="image" accept="image/*"><br>
-						<textarea class="form-control" rows="6" cols="30" name="tag" placeholder="Enter the tag Line for your Data" required></textarea>
-						<p >
-							<input type="text" name="userId" id="uId" value="">
-						</p> <br>
-						<button class="btn btn-success">Upload</button><br><br>
-					</form>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					</div>
-				</div>
+				<a class="commit" data-toggle="modal" data-target="#myModal1" data-id="${st.getrId()}" data-id2="${st.getUserId()}">Suggest</a>
+				<a href="getAllSuggest/${st.getrId()}">View All Suggestions</a>
 			</div>
 		</div>
-	</div>
-	<!-- Comment Modal -->
+</c:forEach>
 	<div class="modal fade" id="myModal1" role="dialog">
 		<div class="modal-dialog">
-			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
+					<h3 class="modal-title" id="le">Suggestion to Report</h3>
 					<button type="button" class="close" style="color:black;" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Comment To Post</h4>
 				</div>
 				<div class="modal-body">
-					<form action="commentServlet" method="post">
-						<p>
-							<input type="text" name="postId" id="pId" value="">
+					<form action="suggest" method="post">
+						<p style="display:none;">
+							<input type="text" name="rId" id="reportId" value="">
 							<input type="text" name="userId" id="useId" value="">
 						</p><br>
-						<textarea class="form-control" rows="6" cols="30" name="comment" placeholder="Enter comment to post" required></textarea>
+						<textarea class="form-control" rows="6" cols="30" name="suggest" placeholder="Enter your Suggestion.." required></textarea>
 						<br>
-						<button class="btn btn-primary">Comment</button><br><br>
+						<button class="btn btn-primary">Answer</button><br><br>
 					</form>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -210,17 +163,15 @@
 			</div>
 		</div>
 	</div>
-<script>
-$(".uPost").click(function() {
-	var id = $(this).data("id");
-	$("#uId").val(id);
-});
-$(".commit").click(function() {
-	var id = $(this).data("id");
-	var uId=$(this).data("id2");
-	$("#pId").val(id);
-	$("#useId").val(uId);
-});
-</script>
+	<script>
+	$(".commit").click(function() {
+		var id = $(this).data("id");
+		var uId=$(this).data("id2");
+		$("#reportId").val(id);
+		$("#useId").val(uId);
+	});
+	</script>
+	
+<br><br><br><br>
 </body>
 </html>

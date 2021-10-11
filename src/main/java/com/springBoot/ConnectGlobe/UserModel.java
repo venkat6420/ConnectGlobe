@@ -79,6 +79,12 @@ public class UserModel {
 	public int getUserId() {
 		return userId;
 	}
+	@Override
+	public String toString() {
+		return "UserModel [userId=" + userId + ", fullname=" + fullname + ", email=" + email + ", password=" + password
+				+ ", mobileNumber=" + mobileNumber + ", gender=" + gender + ", active=" + active + ", roles=" + roles
+				+ "]";
+	}
 	
 	
 }

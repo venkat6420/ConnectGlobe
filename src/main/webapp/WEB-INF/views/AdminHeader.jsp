@@ -67,6 +67,7 @@
   	<a href="AllReports">Problems</a>
     <a href="MyReports">MyProblems</a>
     <a href="Profile">Profile</a>
+    <a href="/adminHome">All Users</a>
     <a class="login" href="/logout">Logout</a>
     
 </div>

@@ -4,29 +4,59 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<style>
-.bod{
-width:70%;
-padding-left:30%;
-}
-.con{
-background-color:#CCCCFF;
-text-align:center;
-padding-top:5%;
-padding-bottom:5%;
-width:50%;
-border-radius:15%;
-}
-.center {
-  margin-left: auto;
-  margin-right: auto;
- 
-}
-</style>
-<title>Insert title here</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+  <style >
+  </style>
 </head>
 <body>
+	<%@ include file="heading.jsp" %>
+	<div class = "container">
+		<div class = "row">
+			<div class = "col-md-6 col-md-offset-3">
+				
+				<h1> User Login Page </h1>
+				
+					<c:if test="${not empty error}">
+			<p style="color:red;">${error}</p>
+		</c:if>
+					
+				
+					<form action="login" method="post">
+					
+					<div class = "form-group">
+						<label for ="username"> Enter Email Id :</label>
+						<input type="email" class = "form-control" id ="email" name = "email"
+						placeholder="Enter Email ID" autofocus="autofocus">
+					</div>
+					
+					<div class="form-group">
+						<label for="password">Password</label>: <input type="password"
+							id="psw" name="psw" class="form-control"
+							placeholder="Enter Password"  required/>
+					</div>
+					
+					<div class="form-group">
+						<div class="row">
+							<div class="col-sm-6 col-sm-offset-3">
+								<input type="submit" name="login-submit" id="login-submit"
+									class="form-control btn btn-primary" value="Log In" />
+							</div>
+						</div>
+					</div>
+				</form>
+				<div class="form-group">
+						<span>New user? <a href="register" >Register
+								here</a></span>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- 
+
+    
 
 <div class="bod">
 <div class="container my-5 con">
@@ -41,5 +71,6 @@ border-radius:15%;
 </form>
 </div>
 </div>
+-->
 </body>
 </html>
