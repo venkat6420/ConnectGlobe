@@ -113,7 +113,7 @@
 		//var gen=$(this).data("id4");
 		var id=$(this).data("id5");
 		$("#nam").val(nam);
-		$("#password").val(password);
+		$("#password").val(pssword);
 		$("#phon").val(mobil);
 	//	$("#gen").val(gen);
 		$("#uId").val(id);
