@@ -83,6 +83,12 @@ public class GlobeController {
 		String username=m.getEmail();
 		String password=m.getPassword();
 		String roles=m.getRoles();
+		if(service.checkemailexists(m.getEmail()))
+		{
+			ModelAndView mav = new ModelAndView("/Registration");
+			mav.addObject("exits", "Email I'd Already Exists");
+			return mav;
+		}
 		CredentialModel data=new CredentialModel(username,password,roles);
 		UserModel u=service.saveToUser(m);
 		CredentialModel c=service.saveToCredential(data);
@@ -94,6 +100,7 @@ public class GlobeController {
 	@PostMapping(value = "/login",produces = "application/json")
 	public ModelAndView createAuthenticationToken(@RequestParam("email") String email,@RequestParam("psw") String password,HttpSession session,ModelMap modelMap) throws Exception{
 		System.out.println("authenticated");
+		
 		AuthenticationRequest a=new AuthenticationRequest(email,password);
 		System.out.println(a.getUsername());
 		try {

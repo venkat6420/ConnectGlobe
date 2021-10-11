@@ -32,6 +32,9 @@ public class GlobeService implements UserDetailsService{
 	@Autowired
 	MyReportEntityRepo myre;
 	
+	@Autowired
+	UserRepo1 repop1;
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		CredentialModel model = repo.findByUsername(username);
@@ -154,6 +157,10 @@ public class GlobeService implements UserDetailsService{
 		UserModel q=repop.getById(Uid);
 		l.add(q);
 		return l;
+	}
+	public boolean checkemailexists(String email) {
+              boolean m=repop1.existsByEmail(email);
+		return m;
 	}
 	
 }

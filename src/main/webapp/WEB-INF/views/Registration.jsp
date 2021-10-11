@@ -38,6 +38,7 @@ border-radius:15%;
 			<div class="col-md-6 col-md-offset-3">
 
 				<p style="color:green;">${success}</p>
+				<p style="color:red;">${exits}</p>
 				<h1>Registration</h1>
 <form action="save" method="post" modelAtrribute="register">
 
