@@ -24,8 +24,10 @@ public class MyReportEntity {
 		this.issue = issue;
 	}
 	public int getrId() {
+		
 		return rId;
 	}
+	
 	public void setrId(int rId) {
 		this.rId = rId;
 	}
