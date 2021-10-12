@@ -48,7 +48,7 @@
 					</div>
 				</form>
 				<div class="form-group">
-						<span>New user? <a href="register" >Register
+						<span>New user? <a href="/register" >Register
 								here</a></span>
 				</div>
 			</div>

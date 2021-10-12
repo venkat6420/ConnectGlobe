@@ -260,10 +260,10 @@ public class GlobeService implements UserDetailsService{
 	public boolean checkemailexists(String email) {
         UserModel u = repop.findByEmail(email);
         if(u != null) {
-        	return false;
+        	return true;
         }
         else {
-        	return true;
+        	return false;
         }
 	}
 }
