@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page import="java.sql.*"%>
+<%@ page import="java.util.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -106,16 +109,37 @@
 		position:relative;
 		float:left;
 	}
+	.uPost{
+		float:right;
+		position:relative;
+		right:10px;
+		top:10px;
+	}
+	#delete{
+		position:relative;
+		top:10px;
+		left:700px;
+	}
 	
 </style>
 </head>
 <body>
-<%@ include file="TopHeader.jsp" %>
-<div class="uPost" data-toggle="modal" data-target="#myModal" data-id="${userId}">
+<c:if test = "${userModel.getRoles() == 'ROLE_USER'}">
+	<%@ include file="TopHeader.jsp" %>
+</c:if>
+<c:if test = "${userModel.getRoles() == 'ROLE_ADMIN'}">
+	<%@ include file="AdminHeader.jsp" %>
+</c:if>
+<div class="uPost" data-toggle="modal" data-target="#myModal" data-id="${userModel.getUserId()}">
 			<button class="btn-primary"><i class="material-icons" style="font-size:30px">playlist_add</i> <h5><b>Report Your Issue</b></h5></button>
 </div>
 <c:forEach var="st" items="${ReportList}">
 		<div class="box">
+			<div class="form-group" id="delete">
+				<a href="/delete/${st.getrId()}">
+          			<span class="glyphicon glyphicon-trash"></span>
+        		</a>
+			</div>
 			<div class="form-group name">
 				<p><i class="material-icons" style="font-size:36px;color:grey">account_circle</i></p>
 				<h4> ${st.getName()}</h4>
@@ -126,7 +150,7 @@
 			<hr style="color:black;">
 			<hr style="color:black;">
 			<div class="form-group comment">
-				<a href="">View All Suggestions</a>
+				<a href="AllSuggestions/${st.getrId()}">View All Suggestions</a>
 			</div>
 		</div>
 </c:forEach>
@@ -139,7 +163,7 @@
 					<h4 class="modal-title">Report Your Issue</h4>
 				</div>
 				<div class="modal-body">
-					<form class="btm" action="uploadReport" method="post">
+					<form class="btm" action="/uploadReport" method="post">
 						<br>
 						<label for="Upload">Report : </label><br>
 						<textarea class="form-control" rows="6" cols="30" name="issue" placeholder="Enter your issue.." required></textarea>

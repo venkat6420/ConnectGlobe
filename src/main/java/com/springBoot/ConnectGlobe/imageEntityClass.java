@@ -1,8 +1,5 @@
 package com.springBoot.ConnectGlobe;
 
-import javax.persistence.Entity;
-
-
 public class imageEntityClass {
 	private int pId;
 	private int userId;

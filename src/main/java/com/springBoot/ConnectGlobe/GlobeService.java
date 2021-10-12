@@ -27,13 +27,16 @@ public class GlobeService implements UserDetailsService{
 	uploadEntityRepo repou;
 	
 	@Autowired
+	commentRepo repoc;
+	
+	@Autowired
+	suggestEntityRepo repos;
+	
+	@Autowired
 	PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	MyReportEntityRepo myre;
-	
-	@Autowired
-	UserRepo1 repop1;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -44,9 +47,9 @@ public class GlobeService implements UserDetailsService{
 		return new GlobeGetDetails(model);
 	}
 	public UserModel saveToUser(UserModel model) {
+		System.out.println(model.getPassword());
 		model.setPassword(passwordEncoder.encode(model.getPassword()));
 		UserModel u=repop.save(model);
-		
 		return u;
 	}
 	public CredentialModel saveToCredential(CredentialModel model) {
@@ -151,6 +154,86 @@ public class GlobeService implements UserDetailsService{
 		return l;
 				
 	}
+	public commentEntity saveToComment(commentEntity u) {
+		commentEntity t=repoc.save(u);
+		return t;
+	}
+	public List<commentEntityClass> viewComments(int id) throws UnsupportedEncodingException{
+		int uId;
+		List<commentEntityClass> li=new ArrayList<>();
+		List<commentEntity> l=repoc.findBypId(id);
+		System.out.println(l.size()+"list size....");
+		for(int i=0;i<l.size();i++) {
+			uId=l.get(i).getUserId();
+			UserModel y=repop.getById(uId);
+			String name=y.getFullname();
+			String comment=l.get(i).getComment();
+			int pId=l.get(i).getpId();
+			int cId=l.get(i).getcId();
+			commentEntityClass t=new commentEntityClass(cId,pId,uId,comment,name);
+			li.add(t);
+		}
+		return li;
+	}
+	public List<imageEntityClass> getMyPostsComment(int id) throws UnsupportedEncodingException{
+		System.out.println("inside");
+		String image="";
+		List<imageEntityClass> t=new ArrayList<>();
+		uploadEntity d=repou.getById(id);
+		System.out.println("outside");
+		if(d.getImage() != null) {
+			byte[] encode = java.util.Base64.getEncoder().encode(d.getImage());
+			image =new String(encode,"UTF-8");				
+		}
+		String tag=d.getTag();
+		int pId=d.getpId();
+		int userId=d.getUserId();
+		UserModel q=repop.getById(userId);
+		String name=q.getFullname();
+		imageEntityClass k=new imageEntityClass(pId,userId,tag,image,name);
+		System.out.println(k.toString());
+		t.add(k);
+		System.out.println(t);
+		return t;
+	}
+	public suggestEntity saveToSuggestions(suggestEntity s) {
+		suggestEntity d=repos.save(s);
+		return d;
+	}
+	public List<suggestionClass> viewSuggestions(int id){
+		List<suggestionClass> li=new ArrayList<>();
+		List<suggestEntity> l=repos.findByrId(id);
+		for(int i=0;i<l.size();i++) {
+			int userId=l.get(i).getUserId();
+			UserModel q=repop.getById(userId);
+			String name=q.getFullname();
+			String suggest=l.get(i).getSuggest();
+			suggestionClass s=new suggestionClass(id,suggest,name);
+			li.add(s);
+		}
+		return li;
+	}
+	public MyReportEntity getMyReportSuggest(int id) {
+		MyReportEntity m=myre.getById(id);
+		return m;
+		
+	}
+	public int deleteInSuggestions(int id) {
+		repos.deleteByrId(id);
+		return 1;
+	}
+	public int deleteInReports(int id) {
+		myre.deleteById(id);
+		return 1;
+	}
+	public int deleteInComments(int id) {
+		repoc.deleteBypId(id);
+		return 1;
+	}
+	public int deleteInPost(int id) {
+		repou.deleteById(id);
+		return 1;
+	}
 	public List<UserModel> getProfileDetails(int Uid)
 	{
 		List<UserModel> l= new ArrayList<>();
@@ -158,9 +241,29 @@ public class GlobeService implements UserDetailsService{
 		l.add(q);
 		return l;
 	}
-	public boolean checkemailexists(String email) {
-              boolean m=repop1.existsByEmail(email);
-		return m;
+	public UserModel getDetails(int id) {
+		UserModel u=repop.getById(id);
+		return u;
 	}
-	
+	public CredentialModel getCredential(int id) {
+		CredentialModel c=repo.getById(id);
+		return c;
+	}
+	public List<UserModel> getAllUsers() {
+		List<UserModel> l=repop.findAll();
+		return l;
+	}
+	public int deleteUser(int id) {
+		repop.deleteById(id);
+		return 1;
+	}
+	public boolean checkemailexists(String email) {
+        UserModel u = repop.findByEmail(email);
+        if(u != null) {
+        	return true;
+        }
+        else {
+        	return false;
+        }
+	}
 }

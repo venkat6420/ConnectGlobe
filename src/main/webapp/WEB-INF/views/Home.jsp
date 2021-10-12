@@ -116,7 +116,12 @@
 </style>
 </head>
 <body>
-<%@ include file="TopHeader.jsp" %>
+<c:if test = "${Roles.getRoles() == 'ROLE_USER'}">
+	<%@ include file="TopHeader.jsp" %>
+</c:if>
+<c:if test = "${Roles.getRoles() == 'ROLE_ADMIN'}">
+	<%@ include file="AdminHeader.jsp" %>
+</c:if>
 <c:forEach var="st" items="${AllPosts}">
 	<%
 		String id=(String)session.getAttribute("userId");
@@ -137,8 +142,8 @@
 			<hr style="color:black;">
 			<hr style="color:black;">
 			<div class="form-group comment">
-				<a class="commit" data-toggle="modal" data-target="#myModal1" data-id="${st.getpId()}" data-id2="${st.getUserId()}">Comment</a>
-				<a href="AllComments?id=${st.getpId()}">View All Comments</a>
+				<a class="commit" data-toggle="modal" data-target="#myModal1" data-id="${st.getpId()}" >Comment</a>
+				<a href="AllComments/${st.getpId()}">View All Comments</a>
 			</div>
 		</div>
 </c:forEach>
@@ -152,10 +157,9 @@
 					<button type="button" class="close" style="color:black;" data-dismiss="modal">&times;</button>
 				</div>
 				<div class="modal-body">
-					<form action="commentServlet" method="post">
+					<form action="comment" method="post">
 						<p >
 							<input type="text" name="postId" id="pId" value="">
-							<input type="text" name="userId" id="useId" value="">
 						</p><br>
 						<textarea class="form-control" rows="6" cols="30" name="comment" placeholder="Enter comment to post" required></textarea>
 						<br>
@@ -171,9 +175,7 @@
 <script>
 $(".commit").click(function() {
 	var id = $(this).data("id");
-	var uId=$(this).data("id2");
 	$("#pId").val(id);
-	$("#useId").val(uId);
 });
 </script>
 </body>

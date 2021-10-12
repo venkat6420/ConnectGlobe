@@ -23,7 +23,7 @@ public class GlobeGetDetails implements UserDetails {
 	public GlobeGetDetails(CredentialModel model) {
 		this.username=model.getUsername();
 		this.password=model.getPassword();
-		this.authorities=Arrays.stream(model.getRoles().split(","))
+		this.authorities=Arrays.stream(model.getRoles().split("_"))
 				.map(SimpleGrantedAuthority::new)
 				.collect(Collectors.toList());
 		

@@ -10,7 +10,6 @@
 	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
 	crossorigin="anonymous">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
 <style>
 .bod{
 width:80%;
@@ -32,7 +31,7 @@ border-radius:15%;
 </style>
 </head>
 <body>
-
+<%@ include file="heading.jsp" %>
 <div class="container">
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">

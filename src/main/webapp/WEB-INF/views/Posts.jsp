@@ -114,16 +114,32 @@
 		right:10px;
 		top:10px;
 	}
+	#delete{
+		position:relative;
+		top:10px;
+		left:700px;
+	}
+	
 </style>
 </head>
 <body>
-	<%@ include file="TopHeader.jsp" %>
-	<div class="uPost" data-toggle="modal" data-target="#myModal" data-id="${userId}">
+	<c:if test = "${userModel.getRoles() == 'ROLE_USER'}">
+		<%@ include file="TopHeader.jsp" %>
+	</c:if>
+	<c:if test = "${userModel.getRoles() == 'ROLE_ADMIN'}">
+		<%@ include file="AdminHeader.jsp" %>
+	</c:if>
+	<div class="uPost" data-toggle="modal" data-target="#myModal" data-id="${userModel.getUserId()}">
 			<button class="btn-primary"><i class="material-icons" style="font-size:30px">playlist_add</i> <h5><b>Upload New Post</b></h5></button>
 	</div>
 	<br><br><br><br><br>
 	<c:forEach var="st" items="${MyPosts}">
 		<div class="box">
+			<div class="form-group" id="delete">
+				<a href="/deletePost/${st.getpId()}">
+          			<span class="glyphicon glyphicon-trash"></span>
+        		</a>
+			</div>
 			<div class="form-group name">
 				<i class="material-icons" style="font-size:36px;color:grey">account_circle</i></p>
 				<h4> ${st.getName()}</h4>
@@ -138,7 +154,7 @@
 			<hr style="color:black;">
 			<div class="form-group comment">
 				<%-- <a class="commit" data-toggle="modal" data-target="#myModal1" data-id="${st.getpId()}" data-id2="${st.getUserId()}">Comment</a> --%>
-				<a href="AllComments?id=${st.getpId()}">View All Comments</a>
+				<a href="AllComments/${st.getpId()}">View All Comments</a>
 			</div>
 		</div> 
 	</c:forEach>
@@ -151,7 +167,7 @@
 					<h4 class="modal-title">Upload a Post</h4>
 				</div>
 				<div class="modal-body">
-					<form class="btm" enctype="multipart/form-data" action="upload" method="post">
+					<form class="btm" enctype="multipart/form-data" action="/upload" method="post">
 						<br>
 						<label for="Upload">Upload Data : </label>
 						<input class="file" type="file" name="image" accept="image/*"><br>

@@ -6,22 +6,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class MyReportEntity {
+public class suggestEntity {
 
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int sId;
 	private int rId;
 	private int userId;
-	private String issue;
-	public MyReportEntity() {
+	private String suggest;
+	public suggestEntity(int rId, int userId, String suggest) {
 		super();
-	}
-	public MyReportEntity(int userId, String issue) {
-		super();
-		
+		this.rId = rId;
 		this.userId = userId;
-		this.issue = issue;
+		this.suggest = suggest;
+	}
+	public suggestEntity() {
+		super();
 	}
 	public int getrId() {
 		return rId;
@@ -35,13 +35,14 @@ public class MyReportEntity {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-	public String getIssue() {
-		return issue;
+	public String getSuggest() {
+		return suggest;
 	}
-	public void setIssue(String issue) {
-		this.issue = issue;
+	public void setSuggest(String suggest) {
+		this.suggest = suggest;
 	}
-	
-	
+	public int getsId() {
+		return sId;
+	}
 	
 }

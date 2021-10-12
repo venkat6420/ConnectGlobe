@@ -1,9 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+    pageEncoding="ISO-8859-1"%>
+<%@ page import="java.sql.*"%>
+<%@ page import="java.util.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta charset="ISO-8859-1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -26,7 +29,7 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<title>Insert title here</title>
+<title>Profile</title>
 <style>
 	.drop{
 		position:relative;
@@ -51,17 +54,11 @@
 </style>
 </head>
 <body>
-	<c:if test = "${Roles.getRoles() == 'ROLE_USER'}">
-		<%@ include file="TopHeader.jsp" %>
-	</c:if>
-	<c:if test = "${Roles.getRoles() == 'ROLE_ADMIN'}">
-		<%@ include file="AdminHeader.jsp" %>
-	</c:if>
+	<%@ include file="TopHeader.jsp"%>
 	<c:forEach var="st" items="${userDetails}">
 		<div class="container drop">
 			<div class="form-group">
 				<i class="material-icons" style="font-size: 150px; color: grey">account_circle</i>
-				</p>
 			</div>
 			<div class="form-group">
 				<label>Name : </label>${st.getFullname()}
@@ -78,8 +75,8 @@
 			<div class="form-group">
 				<button class="btn btn-primary commit" data-toggle="modal"
 					data-target="#myModal1" data-id="${st.getFullname()}"
-					 data-id3="${st.getMobileNumber()}"
-					 data-id5="${st.getUserId()}">Edit Profile</button>
+					data-id2="${st.getEmail()}" data-id3="${st.getMobileNumber()}"
+					data-id4="${st.getGender()}" data-id5="${st.getUserId()()}">Edit Profile</button>
 			</div>
 		</div>
 	</c:forEach>
@@ -93,13 +90,14 @@
 					
 				</div>
 				<div class="modal-body">
-					<form class="btm" action="/Edit" method="post">
+					<form class="btm" action="Edit" method="post">
 						<p style="display:none;">
 							<input type="text" name="id" id="uId" value="">
 						</p>
 						<label>Name : </label><input type="text" name="name" id="nam" value=""><br>
+						<label>Email : </label><input type="text" name="email" id="emai" value=""><br>
 						<label>Phone : </label><input type="text" name="phone" id="phon" value=""><br>
-						<label>New Password : </label><input type="password" name="pass" id="gen" value=""><br>
+						<label>gender : </label><input type="text" name="gend" id="gen" value=""><br>
 						<button class="btn btn-success">Edit</button><br><br>
 					</form>
 					<div class="modal-footer">
@@ -112,10 +110,15 @@
 	<script>
 	$(".commit").click(function() {
 		var nam = $(this).data("id");
+		alert(nam);
+		var emai=$(this).data("id2");
 		var mobil=$(this).data("id3");
+		var gen=$(this).data("id4");
 		var id=$(this).data("id5");
 		$("#nam").val(nam);
+		$("#emai").val(emai);
 		$("#phon").val(mobil);
+		$("#gen").val(gen);
 		$("#uId").val(id);
 	});
 	</script>
