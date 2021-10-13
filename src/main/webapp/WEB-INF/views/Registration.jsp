@@ -29,6 +29,7 @@ border-radius:15%;
  
 }
 </style>
+<title>Connect GLobe</title>
 </head>
 <body>
 <%@ include file="heading.jsp" %>

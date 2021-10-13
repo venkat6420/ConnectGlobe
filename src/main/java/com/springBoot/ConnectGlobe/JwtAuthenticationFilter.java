@@ -1,12 +1,10 @@
 package com.springBoot.ConnectGlobe;
 
 import java.io.IOException;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,10 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		
-		System.out.println(request);
-		final String requestTokenHeader=request.getHeader("Authorization");
-		System.out.println("RequestToken"+requestTokenHeader);
+		final String requestTokenHeader=request.getHeader("Authorization");	
 		String username=null;
 		String jwtToken=null;
 		if(requestTokenHeader!=null && requestTokenHeader.startsWith("Bearer "))
@@ -41,18 +36,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			username=this.jwtUtil.extractUsername(jwtToken);
 			}catch (ExpiredJwtException e)
 			{
-				
-				System.out.println("jwt token has expired");
+				e.printStackTrace();
 			}catch(Exception e)
 			{
-				
-				System.out.println("error");
+				e.printStackTrace();
 			}
 			
-		}
-		else
-		{
-			System.out.println("Tocken Invalid Not Start");
 		}
 		
 		if(username!=null && SecurityContextHolder.getContext().getAuthentication()==null)
@@ -67,10 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthentication);
 			}
 		}
-		else
-		{
-			System.out.println("NOT VALID Token");
-		}
+		
 		filterChain.doFilter(request, response);
 	}
 	

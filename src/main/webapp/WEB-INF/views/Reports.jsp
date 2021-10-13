@@ -23,6 +23,7 @@
 %>
 <html>
 <head>
+<title>Connect GLobe</title>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">

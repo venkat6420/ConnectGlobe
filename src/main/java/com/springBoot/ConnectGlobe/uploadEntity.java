@@ -1,9 +1,6 @@
 package com.springBoot.ConnectGlobe;
 
-import java.io.FileInputStream;
-import java.sql.Blob;
 import java.util.Arrays;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

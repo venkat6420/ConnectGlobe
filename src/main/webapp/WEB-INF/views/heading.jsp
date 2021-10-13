@@ -22,6 +22,7 @@
 }
  
  </style> 
+ <title>Connect GLobe</title>
 </head>
 <body>
 <div class="container-fluid">

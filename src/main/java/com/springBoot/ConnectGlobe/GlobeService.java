@@ -3,8 +3,6 @@ package com.springBoot.ConnectGlobe;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -46,28 +44,28 @@ public class GlobeService implements UserDetailsService{
 		}
 		return new GlobeGetDetails(model);
 	}
-	public UserModel saveToUser(UserModel model) {
-		System.out.println(model.getPassword());
+	public void saveToUser(UserModel model) {
+		
 		model.setPassword(passwordEncoder.encode(model.getPassword()));
-		UserModel u=repop.save(model);
-		return u;
+		repop.save(model);
+		
 	}
-	public CredentialModel saveToCredential(CredentialModel model) {
+	public void saveToCredential(CredentialModel model) {
 		model.setPassword(passwordEncoder.encode(model.getPassword()));
-		CredentialModel c=repo.save(model);
-		return c;
+		repo.save(model);
+		
 	}
 	public CredentialModel findByUsername(String username) {
-		CredentialModel model=repo.findByUsername(username);
-		return model;
+		return repo.findByUsername(username);
+	
 	}
 	public UserModel findByEmail(String username) {
-		UserModel p=repop.findByEmail(username);
-		return p;
+		return repop.findByEmail(username);
+		
 	}
 	public uploadEntity saveToMyPosts(uploadEntity u) {
-		uploadEntity t=repou.save(u);
-		return t;
+		return repou.save(u);
+		
 	}
 	public List<imageEntityClass> getAllPosts() throws UnsupportedEncodingException{
 		String image="";
@@ -85,10 +83,10 @@ public class GlobeService implements UserDetailsService{
 			UserModel q=repop.getById(userId);
 			String name=q.getFullname();
 			imageEntityClass k=new imageEntityClass(pId,userId,tag,image,name);
-			System.out.println(k.toString());
+		
 			t.add(k);
 		}
-		System.out.println(t);
+		
 		return t;
 	}
 	public List<MyReportEntityClass> getAllReports()
@@ -103,17 +101,17 @@ public class GlobeService implements UserDetailsService{
 			UserModel q=repop.getById(uid);
 			String name=q.getFullname();
 			MyReportEntityClass m1 = new MyReportEntityClass(rid, uid, issue, name);
-			System.out.println(m1.toString());
+			
 			l.add(m1);
 		}
 		return l;
 	}
 	public List<imageEntityClass> getMyPosts(int id) throws UnsupportedEncodingException{
-		System.out.println("inside");
+	
 		String image="";
 		List<imageEntityClass> t=new ArrayList<>();
 		List<uploadEntity> l=repou.findByUserId(id);
-		System.out.println("outside"+l.size());
+	
 		for(int i=0;i<l.size();i++) {
 			if(l.get(i).getImage() != null) {
 				byte[] encode = java.util.Base64.getEncoder().encode(l.get(i).getImage());
@@ -125,22 +123,22 @@ public class GlobeService implements UserDetailsService{
 			UserModel q=repop.getById(userId);
 			String name=q.getFullname();
 			imageEntityClass k=new imageEntityClass(pId,userId,tag,image,name);
-			System.out.println(k.toString());
+			
 			t.add(k);
 		}
 		System.out.println(t);
 		return t;
 	}
 	public MyReportEntity saveToMyReport(MyReportEntity my) {
-		// TODO Auto-generated method stub
+		
 		MyReportEntity r =myre.save(my);
 		return r;
 	}
 	public List<MyReportEntityClass> getMyReports(int uid) {
-		System.out.println("inside getMyReports");
+		
 		List<MyReportEntityClass> l = new ArrayList<>();
 		List<MyReportEntity> m = myre.findByUserId(uid);
-		System.out.println("outside"+l.size());
+		
 		for(int i=0;i<m.size();i++)
 		{
 			int rid= m.get(i).getrId();
@@ -148,7 +146,7 @@ public class GlobeService implements UserDetailsService{
 			UserModel q=repop.getById(uid);
 			String name=q.getFullname();
 			MyReportEntityClass m1 = new MyReportEntityClass(rid, uid, issue, name);
-			System.out.println(m1.toString());
+		
 			l.add(m1);
 		}
 		return l;
@@ -162,7 +160,7 @@ public class GlobeService implements UserDetailsService{
 		int uId;
 		List<commentEntityClass> li=new ArrayList<>();
 		List<commentEntity> l=repoc.findBypId(id);
-		System.out.println(l.size()+"list size....");
+		
 		for(int i=0;i<l.size();i++) {
 			uId=l.get(i).getUserId();
 			UserModel y=repop.getById(uId);
@@ -176,11 +174,10 @@ public class GlobeService implements UserDetailsService{
 		return li;
 	}
 	public List<imageEntityClass> getMyPostsComment(int id) throws UnsupportedEncodingException{
-		System.out.println("inside");
+		
 		String image="";
 		List<imageEntityClass> t=new ArrayList<>();
 		uploadEntity d=repou.getById(id);
-		System.out.println("outside");
 		if(d.getImage() != null) {
 			byte[] encode = java.util.Base64.getEncoder().encode(d.getImage());
 			image =new String(encode,"UTF-8");				
@@ -191,14 +188,11 @@ public class GlobeService implements UserDetailsService{
 		UserModel q=repop.getById(userId);
 		String name=q.getFullname();
 		imageEntityClass k=new imageEntityClass(pId,userId,tag,image,name);
-		System.out.println(k.toString());
 		t.add(k);
-		System.out.println(t);
 		return t;
 	}
-	public suggestEntity saveToSuggestions(suggestEntity s) {
-		suggestEntity d=repos.save(s);
-		return d;
+	public void saveToSuggestions(suggestEntity s) {
+		repos.save(s);
 	}
 	public List<suggestionClass> viewSuggestions(int id){
 		List<suggestionClass> li=new ArrayList<>();
@@ -214,8 +208,8 @@ public class GlobeService implements UserDetailsService{
 		return li;
 	}
 	public MyReportEntity getMyReportSuggest(int id) {
-		MyReportEntity m=myre.getById(id);
-		return m;
+		return myre.getById(id);
+		
 		
 	}
 	public int deleteInSuggestions(int id) {
@@ -242,20 +236,16 @@ public class GlobeService implements UserDetailsService{
 		return l;
 	}
 	public UserModel getDetails(int id) {
-		UserModel u=repop.getById(id);
-		return u;
+		return repop.getById(id);
 	}
 	public CredentialModel getCredential(int id) {
-		CredentialModel c=repo.getById(id);
-		return c;
+		return repo.getById(id);
 	}
 	public List<UserModel> getAllUsers() {
-		List<UserModel> l=repop.findAll();
-		return l;
+		return repop.findAll();
 	}
-	public int deleteUser(int id) {
+	public void deleteUser(int id) {
 		repop.deleteById(id);
-		return 1;
 	}
 	public boolean checkemailexists(String email) {
         UserModel u = repop.findByEmail(email);
