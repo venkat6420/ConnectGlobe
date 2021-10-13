@@ -4,6 +4,22 @@
 <%@ page import="java.util.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%
+	try {
+		String name = "";
+		response.setHeader("Cache-Control", "no-cache");
+		response.setHeader("Cache-Control", "no-store");
+		response.setHeader("Pragma", "no-cache");
+		response.setDateHeader("Expires", 0);
+		name=(String)session.getAttribute("userId");
+		if (name == "") {
+			response.sendRedirect("/");
+		} else {
+		}
+	} catch (Exception ex) {
+		out.println(ex);
+	}
+%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -137,6 +153,13 @@
 	</div>
 	<hr style="color:black;">
 	<label for="comment">Suggestions </label>
+	<div class="comments">
+	<c:if test="${suggestions.size()==0}">
+	
+				<p style="color:black;">There are No Comments For this Problem</p>
+				
+	 </c:if>  
+	 </div>
 	<c:forEach var="it" items="${suggestions}">
 		<div class="comments">
 			<h4 style="color:red;">${it.getName()}</h4>

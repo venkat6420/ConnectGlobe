@@ -3,8 +3,25 @@
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%-- <%@ page trimDirectiveWhitespaces="true" %> --%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%
+	try {
+		String name = "";
+		response.setHeader("Cache-Control", "no-cache");
+		response.setHeader("Cache-Control", "no-store");
+		response.setHeader("Pragma", "no-cache");
+		response.setDateHeader("Expires", 0);
+		name=(String)session.getAttribute("userId");
+		if (name == "") {
+			response.sendRedirect("/");
+		} else {
+		}
+	} catch (Exception ex) {
+		out.println(ex);
+	}
+%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -129,11 +146,22 @@
 	<c:if test = "${userModel.getRoles() == 'ROLE_ADMIN'}">
 		<%@ include file="AdminHeader.jsp" %>
 	</c:if>
+	<c:if test="${not empty error}">
+			<p style="color:green;">${error}</p>
+		</c:if>
 	<div class="uPost" data-toggle="modal" data-target="#myModal" data-id="${userModel.getUserId()}">
 			<button class="btn-primary"><i class="material-icons" style="font-size:30px">playlist_add</i> <h5><b>Upload New Post</b></h5></button>
 	</div>
 	<br><br><br><br><br>
+	<c:if test="${MyPosts.size()==0}">
+	<center>
+				<h1 style="color:white;">There are No Posts To Display</h1>
+				</center>
+	 </c:if>  
+	
 	<c:forEach var="st" items="${MyPosts}">
+	
+	
 		<div class="box">
 			<div class="form-group" id="delete">
 				<a href="/deletePost/${st.getpId()}">

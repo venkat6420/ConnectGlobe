@@ -8,6 +8,6 @@ public interface commentRepo extends JpaRepository<commentEntity, Integer> {
 
 	List<commentEntity> findBypId(int id);
 
-	void deleteBypId(int id);
+	//void deleteBypId(int id);
 
 }

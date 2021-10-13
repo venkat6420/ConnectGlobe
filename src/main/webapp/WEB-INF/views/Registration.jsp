@@ -75,10 +75,10 @@ border-radius:15%;
 					
 					<div class="form-group">
 						<label class="control-label" for="gender"> Gender </label> <input
-							type="radio"  id="gender" class="form-control" name="gender" 
+							type="radio"  id="gender" name="gender" 
 							 value="male" /> Male
 				<input
-							type="radio"  id="gender" class="form-control" name="gender" 
+							type="radio"  id="gender" name="gender" 
 							 value="female"/> Female
 					</div>
 					<input type="hidden" name="role" value="user"></td></tr>

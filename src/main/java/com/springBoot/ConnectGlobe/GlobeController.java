@@ -13,12 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.multipart.Part;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -45,10 +48,7 @@ public class GlobeController {
 	
 	@Autowired
 	GlobeService userDetailsService;
-	
-	
-	@Autowired
-	jwtUtil jwtTokenUtil;
+
 	
 	@Autowired
 	GlobeService service;
@@ -62,7 +62,9 @@ public class GlobeController {
 	
 	private int qids;
 	@GetMapping("/")
-	public String home() {
+	public String home(HttpSession session) {
+		System.out.println(session.getAttribute("userId"));
+		session.setAttribute("userId","");
 		return "Login";
 	}
 	@GetMapping("/register")
@@ -104,9 +106,11 @@ public class GlobeController {
 		System.out.println(a.getPassword());
 		try {
 			System.out.println("check..");
-			authenticationManager.authenticate(
+			Authentication authentication=authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(a.getUsername(),a.getPassword())
 				);
+			System.out.println(authentication.getAuthorities());
+			SecurityContextHolder.getContext().setAuthentication(authentication);
 			System.out.println("checked..");
 		}catch(BadCredentialsException e) {
 			ModelAndView mav = new ModelAndView("/Login");
@@ -131,17 +135,21 @@ public class GlobeController {
 			System.out.println(l);
 			mod.addObject("AllPosts",l);
 			mod.addObject("Roles", uo);
-			final String jwt=jwtTokenUtil.generateToken(userDetails);
-			try {
-				request.getSession().setAttribute("token", jwt);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
+//			final String jwt=jwtTokenUtil.generateToken(userDetails);
+//			System.out.println(jwt);
+//			mod.addObject("jwt", jwt);
+//			HttpHeaders header= new HttpHeaders();
+//			header.add("Authorization", "Bearer "+jwt);
+//			try {
+//				request.getSession().setAttribute("token", jwt);
+//			}catch(Exception e) {
+//				e.printStackTrace();
+//			}
 			return mod;
 		}else {
 			System.out.println("Hello admin");
 			final UserModel p=userDetailsService.findByEmail(a.getUsername());
-			final String jwt=jwtTokenUtil.generateToken(userDetails);
+//			final String jwt=jwtTokenUtil.generateToken(userDetails);
 			List<UserModel> li=service.getAllUsers();
 			ModelAndView mod = new ModelAndView("/admin");
 			System.out.println(li);
@@ -155,11 +163,11 @@ public class GlobeController {
 			System.out.println(l);
 			mod.addObject("AllPosts",l);
 			mod.addObject("Roles", uo);
-			try {
-				request.getSession().setAttribute("token", jwt);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
+//			try {
+//				request.getSession().setAttribute("token", jwt);
+//			}catch(Exception e) {
+//				e.printStackTrace();
+//			}
 			return mod;
 		}
 	}
@@ -171,9 +179,11 @@ public class GlobeController {
 		List<imageEntityClass> l =service.getMyPosts(qids);
 		ModelAndView mi=new ModelAndView("/Posts");
 		UserModel u=repo.getById(qids);
+		System.out.println(l+"hjj");
 		mi.addObject("MyPosts", l);
 		mi.addObject("userModel", u);
 		return mi;
+		
 	}
 	
 	@PostMapping("/upload")
@@ -315,9 +325,9 @@ public class GlobeController {
 	@GetMapping("/deletePost/{id}")
 	public ModelAndView deletePost(@PathVariable("id") int id) throws UnsupportedEncodingException {
 		ModelAndView mav=null;
-		int i=service.deleteInComments(id);
+		//int i=service.deleteInComments(id);
 		int j=service.deleteInPost(id);
-		if(i>0 && j>0) {
+		if(j>0) {
 			List<imageEntityClass> l =service.getMyPosts(qids);
 			mav=new ModelAndView("/Posts");
 			UserModel ui=repo.getById(qids);
@@ -380,5 +390,11 @@ public class GlobeController {
 		ModelAndView mod = new ModelAndView("/admin");
 		mod.addObject("userDetails", li);
 		return mod;
+	}
+	@RequestMapping("/accessDenied")
+	public String accessDenied()
+	{
+		//session.setAttribute("userId","");
+		return "Login";	
 	}
 }

@@ -23,9 +23,6 @@ public class GlobeConfig  extends WebSecurityConfigurerAdapter{
 	@Autowired
 	UserDetailsService userService;
 	
-	@Autowired
-	JwtAuthenticationFilter jwtAuthenticationFilter;
-	
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -50,40 +47,47 @@ public class GlobeConfig  extends WebSecurityConfigurerAdapter{
 		.cors().and()
 		.authorizeRequests()
 			.antMatchers("/").permitAll()
+			.antMatchers("/register").permitAll()
 			.antMatchers("/save").permitAll()
 			.antMatchers("/login").permitAll()
-			.antMatchers("/MyPosts/upload").hasRole("USER")
-			.antMatchers("/MyPosts").hasRole("USER")
-			.antMatchers("/home").permitAll()
-			.antMatchers("/AllReports").permitAll()
-			.antMatchers("/MyReports").permitAll()
-			.antMatchers("/uploadReport").permitAll()
-			.antMatchers("/Profile").permitAll()
-			.antMatchers("/comment").permitAll()
-			.antMatchers("/AllComments").permitAll()
-			.antMatchers("/back").permitAll()
-			.antMatchers("/suggest").permitAll()
-			.antMatchers("/getAllSuggest").permitAll()
-			.antMatchers("/return").permitAll()
-			.antMatchers("/delete").permitAll()
-			.antMatchers("/deletePost").permitAll()
-			.antMatchers("/Profile").permitAll()
-			.antMatchers("/Edit").permitAll()
-			.antMatchers("/getUserProfile").permitAll()
-			.antMatchers("/deleteUserProfile").permitAll()
-			.antMatchers("/adminHome").permitAll()
-//			.anyRequest().authenticated()
+			.antMatchers("/MyPosts/upload").hasAnyAuthority("ADMIN","USER")
+			.antMatchers("/MyPosts").hasAnyAuthority("ADMIN","USER")
+			.antMatchers("/home").hasAnyAuthority("ADMIN","USER")
+			.antMatchers("/AllReports").hasAnyAuthority("ADMIN","USER")
+			.antMatchers("/MyReports").hasAnyAuthority("ADMIN","USER")
+			.antMatchers("/uploadReport").hasAnyAuthority("ADMIN","USER")
+			.antMatchers("/comment").hasAnyAuthority("ADMIN","USER")
+			.antMatchers("/AllComments").hasAnyAuthority("ADMIN","USER")
+			.antMatchers("/back").hasAnyAuthority("ADMIN","USER")
+			.antMatchers("/suggest").hasAnyAuthority("ADMIN","USER")
+			.antMatchers("/getAllSuggest").hasAnyAuthority("ADMIN","USER")
+			.antMatchers("/return").hasAnyAuthority("ADMIN","USER")
+			.antMatchers("/delete").hasAnyAuthority("ADMIN","USER")
+			.antMatchers("/deletePost").hasAnyAuthority("ADMIN","USER")
+			.antMatchers("/Profile").hasAnyAuthority("ADMIN","USER")
+			.antMatchers("/Edit").hasAnyAuthority("ADMIN","USER")
+			.antMatchers("/getUserProfile").hasAuthority("ADMIN")
+			.antMatchers("/deleteUserProfile").hasAuthority("ADMIN")
+			.antMatchers("/adminHome").hasAuthority("ADMIN")
+			.anyRequest().authenticated()
+			
 			.and()
 			.logout().invalidateHttpSession(true)
 			.clearAuthentication(true)
 			.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-			.logoutSuccessUrl("/").permitAll()
-		 	.and().sessionManagement()
-		 	.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-	http.csrf().disable();
-	http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-	}
+			.logoutSuccessUrl("/").permitAll();
+			
+		http
+		.exceptionHandling().accessDeniedPage("/accessDenied");
+		
+		
+		
+		
+	http
+	.csrf().disable();
+
 	
+	}
 	@Override
 	@Bean
 	protected AuthenticationManager authenticationManager() throws Exception {

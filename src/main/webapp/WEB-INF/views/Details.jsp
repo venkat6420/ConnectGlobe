@@ -4,6 +4,22 @@
 <%@ page import="java.util.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
+<%
+	try {
+		String name = "";
+		response.setHeader("Cache-Control", "no-cache");
+		response.setHeader("Cache-Control", "no-store");
+		response.setHeader("Pragma", "no-cache");
+		response.setDateHeader("Expires", 0);
+		name=(String)session.getAttribute("userId");
+		if (name == "") {
+			response.sendRedirect("/");
+		} else {
+		}
+	} catch (Exception ex) {
+		out.println(ex);
+	}
+%>
 <html>
 <head>
 <meta charset="ISO-8859-1">

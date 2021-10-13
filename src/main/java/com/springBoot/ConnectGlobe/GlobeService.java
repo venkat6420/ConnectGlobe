@@ -227,7 +227,7 @@ public class GlobeService implements UserDetailsService{
 		return 1;
 	}
 	public int deleteInComments(int id) {
-		repoc.deleteBypId(id);
+		repoc.deleteById(id);
 		return 1;
 	}
 	public int deleteInPost(int id) {

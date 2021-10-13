@@ -4,6 +4,22 @@
 <%@ page import="java.util.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%
+	try {
+		String name = "";
+		response.setHeader("Cache-Control", "no-cache");
+		response.setHeader("Cache-Control", "no-store");
+		response.setHeader("Pragma", "no-cache");
+		response.setDateHeader("Expires", 0);
+		name=(String)session.getAttribute("userId");
+		if (name == "") {
+			response.sendRedirect("/");
+		} else {
+		}
+	} catch (Exception ex) {
+		out.println(ex);
+	}
+%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -111,11 +127,16 @@
 	#le{
 		
 	}
+	#delete{
+		position:relative;
+		top:10px;
+		left:700px;
+	}
 	
 	
 </style>
 </head>
-<body>
+<body onload="saveJwt();">
 <c:if test = "${Roles.getRoles() == 'ROLE_USER'}">
 	<%@ include file="TopHeader.jsp" %>
 </c:if>
@@ -129,6 +150,13 @@
 		response.addCookie(ck);
 	%>
 		<div class="box">
+			<c:if test = "${Roles.getRoles() == 'ROLE_ADMIN'}">
+				<div class="form-group" id="delete">
+					<a href="/deletePost/${st.getpId()}">
+	          			<span class="glyphicon glyphicon-trash"></span>
+	        		</a>
+				</div>
+			</c:if>
 			<div class="form-group name">
 				<p><i class="material-icons" style="font-size:36px;color:grey">account_circle</i></p>
 				<h4> ${st.getName()}</h4>
@@ -173,6 +201,11 @@
 		</div>
 	</div>
 <script>
+function saveToJwt(){
+	alert("Hello");
+	console.log("Hello");
+}
+
 $(".commit").click(function() {
 	var id = $(this).data("id");
 	$("#pId").val(id);
