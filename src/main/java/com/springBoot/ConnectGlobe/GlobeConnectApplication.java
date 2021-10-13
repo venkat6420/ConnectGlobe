@@ -8,7 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class GlobeConnectApplication {
 
 	public static void main(String[] args) {
+		System.out.println(System.getProperty("java.version"));
 		SpringApplication.run(GlobeConnectApplication.class, args);
+	
 	}
 
 }

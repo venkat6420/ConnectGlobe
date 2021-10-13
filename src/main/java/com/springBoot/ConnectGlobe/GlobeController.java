@@ -63,7 +63,7 @@ public class GlobeController {
 	private int qids;
 	@GetMapping("/")
 	public String home(HttpSession session) {
-		System.out.println(session.getAttribute("userId"));
+
 		session.setAttribute("userId","");
 		return "Login";
 	}
@@ -75,12 +75,7 @@ public class GlobeController {
 	@PostMapping("/save")
 	public ModelAndView saveToRegister(@ModelAttribute("register") UserModel m) {
 		List<UserModel> l=new ArrayList<>();
-//		String fullname=request.getParameter("username");
-//		String email=request.getParameter("email");
-//		String password=request.getParameter("")
-//		String username=model.getEmail();
-//		String password=model.getPassword();
-//		String roles=model.getRoles();
+
 		String username=m.getEmail();
 		String password=m.getPassword();
 		String roles=m.getRoles();
@@ -100,10 +95,9 @@ public class GlobeController {
 	@PostMapping(value = "/login", produces = "application/json")
 	public ModelAndView createAuthenticationToken(@RequestParam("email") String email,@RequestParam("psw") String password,HttpSession session,HttpServletRequest request) throws Exception{
 		System.out.println("authenticated");
-		System.out.println(password);
+	
 		AuthenticationRequest a=new AuthenticationRequest(email,password);
-		System.out.println(a.getUsername());
-		System.out.println(a.getPassword());
+		
 		try {
 			System.out.println("check..");
 			Authentication authentication=authenticationManager.authenticate(
@@ -135,16 +129,7 @@ public class GlobeController {
 			System.out.println(l);
 			mod.addObject("AllPosts",l);
 			mod.addObject("Roles", uo);
-//			final String jwt=jwtTokenUtil.generateToken(userDetails);
-//			System.out.println(jwt);
-//			mod.addObject("jwt", jwt);
-//			HttpHeaders header= new HttpHeaders();
-//			header.add("Authorization", "Bearer "+jwt);
-//			try {
-//				request.getSession().setAttribute("token", jwt);
-//			}catch(Exception e) {
-//				e.printStackTrace();
-//			}
+//			
 			return mod;
 		}else {
 			System.out.println("Hello admin");
@@ -163,23 +148,18 @@ public class GlobeController {
 			System.out.println(l);
 			mod.addObject("AllPosts",l);
 			mod.addObject("Roles", uo);
-//			try {
-//				request.getSession().setAttribute("token", jwt);
-//			}catch(Exception e) {
-//				e.printStackTrace();
-//			}
+//			
 			return mod;
 		}
 	}
 	@GetMapping("/MyPosts")
 	public ModelAndView getMyPosts() throws UnsupportedEncodingException {
 		
-		System.out.println("Hello"+qids);
-		//int Uid=Integer.parseInt(id);
+	
 		List<imageEntityClass> l =service.getMyPosts(qids);
 		ModelAndView mi=new ModelAndView("/Posts");
 		UserModel u=repo.getById(qids);
-		System.out.println(l+"hjj");
+		
 		mi.addObject("MyPosts", l);
 		mi.addObject("userModel", u);
 		return mi;
@@ -188,7 +168,7 @@ public class GlobeController {
 	
 	@PostMapping("/upload")
 	public ModelAndView uploadPost(@RequestParam("image") MultipartFile p,@RequestParam("tag") String tag,@RequestParam("userId") int id) throws IOException {
-		System.out.println("Upload method");
+	
 		byte[] i=p.getBytes();
 		uploadEntity u=new uploadEntity(id,tag,i);
 		uploadEntity t=service.saveToMyPosts(u);
@@ -198,7 +178,7 @@ public class GlobeController {
 		UserModel ui=repo.getById(Uid);
 		mk.addObject("MyPosts", l);
 		mk.addObject("userModel",ui);
-		System.out.println("file uploaded succes");
+		
 		return mk;
 	}
 	
@@ -226,8 +206,7 @@ public class GlobeController {
 	@GetMapping("/MyReports")
 	public ModelAndView MyReports()
 	{
-		//int Uid=Integer.parseInt(id);
-		System.out.println("Hello"+qids);
+		
 		List<MyReportEntityClass> re = service.getMyReports(qids);
 		ModelAndView mav = new ModelAndView("/MyReports");
 		UserModel u=repo.getById(qids);
@@ -239,7 +218,7 @@ public class GlobeController {
 	@PostMapping("/uploadReport")
 	public ModelAndView uploadReport(@RequestParam("issue") String issue,@RequestParam("userId") int id)
 	{
-		System.out.println("Upload Report");
+	
 		MyReportEntity my = new MyReportEntity(id, issue);
 		MyReportEntity m1 = service.saveToMyReport(my);
 		int Uid=m1.getUserId();
@@ -325,7 +304,7 @@ public class GlobeController {
 	@GetMapping("/deletePost/{id}")
 	public ModelAndView deletePost(@PathVariable("id") int id) throws UnsupportedEncodingException {
 		ModelAndView mav=null;
-		//int i=service.deleteInComments(id);
+		
 		int j=service.deleteInPost(id);
 		if(j>0) {
 			List<imageEntityClass> l =service.getMyPosts(qids);
@@ -394,7 +373,8 @@ public class GlobeController {
 	@RequestMapping("/accessDenied")
 	public String accessDenied()
 	{
-		//session.setAttribute("userId","");
+
 		return "Login";	
 	}
+
 }
