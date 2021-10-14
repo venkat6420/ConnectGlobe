@@ -136,7 +136,10 @@
 		top:10px;
 		left:700px;
 	}
-	
+	#space{
+		position:relative;
+		left:40px;
+	}
 </style>
 </head>
 <body>
@@ -149,6 +152,11 @@
 <div class="uPost" data-toggle="modal" data-target="#myModal" data-id="${userModel.getUserId()}">
 			<button class="btn-primary"><i class="material-icons" style="font-size:30px">playlist_add</i> <h5><b>Report Your Issue</b></h5></button>
 </div>
+<c:if test="${ReportList.size()==0}">
+			<center>
+				<h1 style="color:white;">There are No Reports To Display Upload a Problem To See</h1>
+				</center>
+</c:if>  
 <c:forEach var="st" items="${ReportList}">
 		<div class="box">
 			<div class="form-group" id="delete">
@@ -160,7 +168,7 @@
 				<p><i class="material-icons" style="font-size:36px;color:grey">account_circle</i></p>
 				<h4> ${st.getName()}</h4>
 			</div>
-			<div class="form-group">
+			<div id="space" class="form-group">
 				<h4>${st.getIssue()}</h4>
 			</div>
 			<hr style="color:black;">

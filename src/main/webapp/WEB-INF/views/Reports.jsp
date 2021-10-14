@@ -143,6 +143,11 @@
 <c:if test = "${Roles.getRoles() == 'ROLE_ADMIN'}">
 	<%@ include file="AdminHeader.jsp" %>
 </c:if>
+<c:if test="${AllReports.size()==0}">
+	<center>
+				<h1 style="color:white;">There are No Reports To Display</h1>
+				</center>
+</c:if>  
 <c:forEach var="st" items="${AllReports}">
 		<div class="box">
 			<c:if test = "${Roles.getRoles() == 'ROLE_ADMIN'}">

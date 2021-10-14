@@ -149,6 +149,11 @@
 			<button class="btn-primary"><i class="material-icons" style="font-size:30px">playlist_add</i> <h5><b>Upload New Post</b></h5></button>
 	</div>
 	<br><br><br><br><br>
+	<c:if test="${MyPosts.size()==0}">
+	<center>
+				<h1 style="color:white;">There are No Posts To Display</h1>
+				</center>
+	 </c:if> 
 	<c:forEach var="st" items="${MyPosts}">
 		<div class="box">
 			<div class="form-group" id="delete">

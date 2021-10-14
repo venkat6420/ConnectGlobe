@@ -159,6 +159,11 @@
 			<hr style="color:black;">
 			<hr style="color:black;">
 			<label for="comment">Comments </label>
+			<c:if test="${comments.size()==0}">
+			<center>
+				<p style="color:black font-size: 10px;" >There are Comments To Display</p>
+			</center>
+	 		</c:if>  
 			<c:forEach var="it" items="${comments}">
 				<div class="comments">
 					<h4 style="color:red;">${it.getName()}</h4>

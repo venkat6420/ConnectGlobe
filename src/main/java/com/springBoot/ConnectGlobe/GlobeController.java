@@ -311,21 +311,24 @@ public class GlobeController {
 	@GetMapping("/delete/{id}")
 	public ModelAndView deleteReport(@PathVariable("id") int id) {
 		ModelAndView mav = null;
-		int i=service.deleteInSuggestions(id);
+//		int i=service.deleteInSuggestions(id);
 		int j=service.deleteInReports(id);
-		if(i>0 && j>0) {
+		if(j>0) {
 			List<MyReportEntityClass> re = service.getMyReports(qids);
+			UserModel ui=repo.getById(qids);
 			mav = new ModelAndView("/MyReports");
 			mav.addObject("ReportList",re);
+			mav.addObject("userModel", ui);
 		}
 		return mav;
 	}
 	@GetMapping("/deletePost/{id}")
 	public ModelAndView deletePost(@PathVariable("id") int id) throws UnsupportedEncodingException {
 		ModelAndView mav=null;
-		int i=service.deleteInComments(id);
+		System.out.println();
+//		int i=service.deleteInComments(id);
 		int j=service.deleteInPost(id);
-		if(i>0 && j>0) {
+		if( j>0) {
 			List<imageEntityClass> l =service.getMyPosts(qids);
 			mav=new ModelAndView("/Posts");
 			UserModel ui=repo.getById(qids);

@@ -153,6 +153,11 @@
 	</div>
 	<hr style="color:black;">
 	<label for="comment">Suggestions </label>
+	<c:if test="${suggestions.size()==0}">
+	
+				<p style="color:black;">There are No Comments For this Problem</p>
+				
+	 </c:if>  
 	<c:forEach var="it" items="${suggestions}">
 		<div class="comments">
 			<h4 style="color:red;">${it.getName()}</h4>
