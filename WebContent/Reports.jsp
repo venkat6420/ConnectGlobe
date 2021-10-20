@@ -110,12 +110,27 @@
 		position:relative;
 		left:40px;
 	}
+	.a{
+	text-align:right;
+	
+	 
+	 padding-right:2%;
+	}
+	.fa {
+    color: red !important;
 </style>
 </head>
 <body>
 <%@ include file="TopHeader.jsp" %>
+
 <c:forEach var="st" items="${AllReports}">
 		<div class="box">
+		<c:if test = "${roles == 'ADMIN'}">
+		<div class="a">
+       <a href="deleterServlet?id=<c:out value='${st.getrId()}' />">   
+       <i class="fa fa-trash fa-3x a" aria-hidden="true" align="right"></i></a> 
+           
+		</div></c:if>
 			<div class="form-group name">
 				<p><i class="material-icons" style="font-size:36px;color:grey">account_circle</i></p>
 				<h4> ${st.getName()}</h4>

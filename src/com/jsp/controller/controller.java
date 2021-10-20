@@ -58,10 +58,25 @@ public class controller {
 		return con;
     }
     public void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
+    	System.out.print("next");
     	String fulname=request.getParameter("username");
     	String email=request.getParameter("email");
     	String password=request.getParameter("password");
-    	String mobile=request.getParameter("mobile");
+    	String mobile=request.getParameter("mobileNumber");
+    	String gender=request.getParameter("gender");
+    	String rol="USER";
+    	Statement statement=con.createStatement();
+    	int i=statement.executeUpdate("insert into registration (fullname,email,password,mobileNumber,gender,roles) values ('"+fulname+"','"+email+"','"+password+"','"+mobile+"','"+gender+"','"+rol+"')");
+    	if(i>0){
+    		response.sendRedirect("adminServlet");
+    	}
+    }
+    public void registeration(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
+    	System.out.print("next");
+    	String fulname=request.getParameter("username");
+    	String email=request.getParameter("email");
+    	String password=request.getParameter("password");
+    	String mobile=request.getParameter("mobileNumber");
     	String gender=request.getParameter("gender");
     	String rol="USER";
     	Statement statement=con.createStatement();
@@ -78,11 +93,16 @@ public class controller {
     	Statement stmt=con.createStatement();
     	Statement stmt2=con.createStatement();
     	ResultSet rs=stmt.executeQuery("select * from registration where email='"+email+"'");
-    	rs.next();
+    	if(rs.next()==false) {
+    		request.setAttribute("error","Invalid Password or invalid username!!");
+			RequestDispatcher dispatcher=request.getRequestDispatcher("/Login.jsp");
+			dispatcher.forward(request,response);
+    	}
+    	//rs.next();
+    	System.out.print("checking");
 		String CPassword = rs.getString("password");
 		System.out.println(password);
 		if(CPassword.equals(password)){
-			System.out.println(CPassword+" "+password);
 			ResultSet rw=stmt2.executeQuery("select * from registration where email='"+email+"'");
 			while(rw.next()){	
 				uId=rw.getInt("userId");
@@ -92,7 +112,6 @@ public class controller {
 				String gen=rw.getString("gender");
 				String rol=rw.getString("roles");
 				detailsRegister d=new detailsRegister(uId,fullname,Email,mobile,gen,rol);
-				System.out.println(d.toString());
 				l.add(d);
 				String id=String.valueOf(uId);
 				Cookie ck18=new Cookie("Id",id);
@@ -100,7 +119,6 @@ public class controller {
 				response.addCookie(ck18);
 				response.addCookie(ck19);
 			}
-			System.out.println(uId);
 			request.setAttribute("details", l);
 			response.sendRedirect("homeServlet");
 		}else{
@@ -139,6 +157,7 @@ public class controller {
     	System.out.println("hello..madam");
     	Statement stmt=con.createStatement();
     	Statement stmt2=con.createStatement();
+    	Statement stmt3=con.createStatement();
 //    	response.setContentType("image/jpeg");
     	Cookie ck[]=request.getCookies();
 		for(int i=0;i<ck.length;i++){
@@ -164,12 +183,16 @@ public class controller {
 			blobModel b=new blobModel(pId,userId,base64Image,tagLine);
 			li.add(b);
 		}
-		System.out.println("UptoMark");
 		ResultSet rw=stmt2.executeQuery("select fullname from registration where userId='"+useId+"'");
 		rw.next();
 		String fullname=rw.getString("fullname");
 		request.setAttribute("name", fullname);
 		request.setAttribute("postList", li);
+		ResultSet r=stmt3.executeQuery("select roles from registration where userId='"+useId+"'");
+		r.next();
+		String role=r.getString("roles");
+		System.out.print("roles"+role);
+		request.setAttribute("roles", role);
 		RequestDispatcher dispatcher=request.getRequestDispatcher("/Posts.jsp");
 		dispatcher.forward(request,response);
     }
@@ -193,6 +216,8 @@ public class controller {
     	List<OverAllPosts> l=new ArrayList<>();
     	Statement stmt=con.createStatement();
     	Statement stmt2=con.createStatement();
+    	Statement stmt3=con.createStatement();
+
     	Blob image=null;
 		byte[] imgData=null;
     	ResultSet rs=stmt.executeQuery("select * from posts");
@@ -220,6 +245,13 @@ public class controller {
 			}
 		}
 		request.setAttribute("ImpId", ImpId);
+		System.out.print("id"+ImpId);
+
+		ResultSet r=stmt3.executeQuery("select roles from registration where userId='"+ImpId+"'");
+		r.next();
+		String role=r.getString("roles");
+		System.out.print("roles"+role);
+		request.setAttribute("roles", role);
     	request.setAttribute("AllPostsList", l);
 		RequestDispatcher dispatcher=request.getRequestDispatcher("/Home.jsp");
 		dispatcher.forward(request,response);
@@ -227,7 +259,9 @@ public class controller {
     public void getAllComments(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
     	List<commnetModel> l=new ArrayList<>();
     	List<blobModel> li=new ArrayList<>();
+    	System.out.print("comments");
     	int id=Integer.parseInt(request.getParameter("id"));
+    	System.out.println("id"+id);
     	Statement stmt=con.createStatement();
     	Statement stmt2=con.createStatement();
     	Statement stmt3=con.createStatement();
@@ -239,11 +273,13 @@ public class controller {
     		ResultSet rt=stmt2.executeQuery("select fullname from registration where userId='"+UId+"'");
     		rt.next();
     		String name=rt.getString("fullname");
+    		System.out.println("n"+name);
     		commnetModel c=new commnetModel(name,reply);
     		l.add(c);
     	}
     	Blob image=null;
     	ResultSet rw=stmt3.executeQuery("select * from posts where pId='"+id+"'");
+    	System.out.print("r"+rw);
     	rw.next();
     	int userId=rw.getInt("userId");
     	String tag=rw.getString("tagLine");
@@ -254,6 +290,12 @@ public class controller {
 		String base64=new String(by,"UTF-8");
 		blobModel b=new blobModel(id,userId,base64,tag);
 		li.add(b);
+		Statement stmt4=con.createStatement();
+		ResultSet r=stmt4.executeQuery("select roles from registration where userId='"+userId+"'");
+		r.next();
+		String role=r.getString("roles");
+		System.out.print("roles"+role);
+		request.setAttribute("roles", role);
 		request.setAttribute("post", li);
     	request.setAttribute("comments", l);
     	RequestDispatcher dispatcher=request.getRequestDispatcher("/Comment.jsp");
@@ -269,6 +311,7 @@ public class controller {
 			}
 		}
 		request.setAttribute("userId", useId);
+		System.out.print("userId"+ useId);
 		Statement stmt=con.createStatement();
 		ResultSet rs=stmt.executeQuery("select * from issues where userId='"+useId+"'");
 		while(rs.next()){
@@ -281,8 +324,16 @@ public class controller {
 		ResultSet rw=stmt.executeQuery("select fullname from registration where userId='"+useId+"'");
 		rw.next();
 		self=rw.getString("fullname");
+		Statement stmt3=con.createStatement();
+
+		ResultSet r=stmt3.executeQuery("select roles from registration where userId='"+useId+"'");
+		r.next();
+		String role=r.getString("roles");
+		System.out.print("roles"+role);
+		request.setAttribute("roles", role);
 		request.setAttribute("ReportList", l);
 		request.setAttribute("name", self);
+		
 		RequestDispatcher dispatcher=request.getRequestDispatcher("/MyReports.jsp");
 		dispatcher.forward(request,response);
     }
@@ -314,11 +365,82 @@ public class controller {
 		String mobile=rs.getString("mobileNumber");
 		String gender=rs.getString("gender");
 		String role=rs.getString("roles");
-		registrationClass r=new registrationClass(id,fullname,email,mobile,gender,role);
+		String password=rs.getString("password");
+		registrationClass r=new registrationClass(id,fullname,email,mobile,gender,role,password);
 		l.add(r);
+		
+		request.setAttribute("roles", role);
+		request.setAttribute("userDetails", l);
+		RequestDispatcher dispatcher=request.getRequestDispatcher("/profile.jsp");
+		dispatcher.forward(request,response);
+    }
+    public void view(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
+    	List<registrationClass> l=new ArrayList<>();
+		Identify=Integer.parseInt(request.getParameter("id"));
+		System.out.print(request.getParameter("id"));
+		Statement stmt=con.createStatement();
+		ResultSet rs=stmt.executeQuery("select * from registration where userId='"+Identify+"'");
+		rs.next();
+		int id=rs.getInt("userId");
+		String fullname=rs.getString("fullname");
+		String email=rs.getString("email");
+		String mobile=rs.getString("mobileNumber");
+		String gender=rs.getString("gender");
+		String role=rs.getString("roles");
+		String password=rs.getString("password");
+		registrationClass r=new registrationClass(id,fullname,email,mobile,gender,role,password);
+		l.add(r);
+		request.setAttribute("roles", role);
 		request.setAttribute("userDetails", l);
 		
 		RequestDispatcher dispatcher=request.getRequestDispatcher("/profile.jsp");
+		dispatcher.forward(request,response);
+    }
+    public void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
+    	List<registrationClass> l=new ArrayList<>();
+		Identify=Integer.parseInt(request.getParameter("id"));
+		System.out.print(request.getParameter("id"));
+		Statement stmt=con.createStatement();
+		ResultSet rs=stmt.executeQuery("select * from registration where id='"+Identify+"'");
+		rs.next();
+		int id=rs.getInt("id");
+		String fullname=rs.getString("fullname");
+		String email=rs.getString("email");
+		String mobile=rs.getString("mobile");
+		String gender=rs.getString("gender");
+		String role=rs.getString("roles");
+		String password=rs.getString("password");
+		registrationClass r=new registrationClass(id,fullname,email,mobile,gender,role,password);
+		l.add(r);
+		request.setAttribute("userDetails", l);
+		
+		RequestDispatcher dispatcher=request.getRequestDispatcher("/edit.jsp");
+		dispatcher.forward(request,response);
+    }
+    public void admin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
+    	List<registrationClass> l=new ArrayList<>();
+    	Cookie ck[]=request.getCookies();
+		for(int i=0;i<ck.length;i++){
+			if(ck[i].getName().equals("Id")){
+				Identify=Integer.parseInt(ck[i].getValue());
+			}
+		}
+		Statement stmt=con.createStatement();
+		ResultSet rs=stmt.executeQuery("select * from registration");
+		while(rs.next()){
+			int id=rs.getInt("userId");
+			String fullname=rs.getString("fullname");
+			String email=rs.getString("email");
+			String mobile=rs.getString("mobileNumber");
+			String gender=rs.getString("gender");
+			String role=rs.getString("roles");
+			String password=rs.getString("password");
+			registrationClass r=new registrationClass(id,fullname,email,mobile,gender,role,password);
+			l.add(r);
+    	}
+		request.setAttribute("userDetails", l);
+		
+		RequestDispatcher dispatcher=request.getRequestDispatcher("/admin.jsp");
 		dispatcher.forward(request,response);
     }
     public void editUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
@@ -337,6 +459,15 @@ public class controller {
     	List<MyReport> l=new ArrayList<>();
     	Statement stmt=con.createStatement();
     	Statement stmt2=con.createStatement();
+    	Statement stmt3=con.createStatement();
+    	Cookie ck[]=request.getCookies();
+		for(int i=0;i<ck.length;i++){
+			if(ck[i].getName().equals("Id")){
+				userId=Integer.parseInt(ck[i].getValue());
+			}
+		}
+    	System.out.print(userId);
+    	
     	ResultSet rs=stmt.executeQuery("select * from issues");
     	while(rs.next()){
     		int rId=rs.getInt("rId");
@@ -349,6 +480,13 @@ public class controller {
     		l.add(r);
     	}
     	request.setAttribute("AllReports", l);
+		
+
+    	ResultSet r=stmt3.executeQuery("select roles from registration where userId='"+userId+"'");
+		r.next();
+		String role=r.getString("roles");
+		System.out.print("roles"+role);
+		request.setAttribute("roles", role);
     	RequestDispatcher dispatcher=request.getRequestDispatcher("/Reports.jsp");
 		dispatcher.forward(request,response);
     }
@@ -401,5 +539,37 @@ public class controller {
     		request.setAttribute("success", "Report posted successfully");
     	}
     }
+	public void delete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+		// TODO Auto-generated method stub
+		Identify=Integer.parseInt(request.getParameter("id"));
+		System.out.print(request.getParameter("id"));
+		Statement stmt=con.createStatement();
+		int rs=stmt.executeUpdate("delete from registration where userId='"+Identify+"'");
+		response.sendRedirect("adminServlet");
+		
+	}
+	public void deletep(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+		// TODO Auto-generated method stub
+		Identify=Integer.parseInt(request.getParameter("id"));
+		System.out.print(request.getParameter("id"));
+		Statement stmt=con.createStatement();
+		int rs1=stmt.executeUpdate("delete from answerstable where pId='"+Identify+"'");
 
+		int rs=stmt.executeUpdate("delete from posts where pId='"+Identify+"'");
+
+		response.sendRedirect("homeServlet");
+		
+	}
+	public void deleter(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+		// TODO Auto-generated method stub
+		Identify=Integer.parseInt(request.getParameter("id"));
+		System.out.print(request.getParameter("id"));
+		Statement stmt=con.createStatement();
+		int rs1=stmt.executeUpdate("delete from suggestions where rId='"+Identify+"'");
+
+		int rs=stmt.executeUpdate("delete from issues where rId='"+Identify+"'");
+
+		response.sendRedirect("AllReports");
+		
+	}
 }

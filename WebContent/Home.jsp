@@ -115,13 +115,29 @@
 		
 	}
 	
+	.a{
+	text-align:right;
 	
+	 padding-top:1%;
+	 padding-right:2%;
+	}
+	.fa {
+    color: red !important;
+   
+}
 </style>
 </head>
 <body>
 <%@ include file="TopHeader.jsp" %>
+     
 <c:forEach var="st" items="${AllPostsList}">
 		<div class="box">
+		<div class="a">
+		       <a href="deletepServlet?id=<c:out value='${st.getpId()}' />">   
+		
+           <i class="fa fa-trash fa-3x a" aria-hidden="true" align="right"></i>
+ </a>          
+		</div>
 			<div class="form-group name">
 				<p><i class="material-icons" style="font-size:36px;color:grey">account_circle</i></p>
 				<h4> ${st.getName()}</h4>

@@ -30,14 +30,14 @@ border-radius:15%;
 <div class="bod">
 <div class="container my-5 con">
 <h1>Registration</h1>
-<form action="registrationServlet" method="post">
+<form action="regServlet" method="post">
 <table class="center">
 <tr><td>Full Name :</td><td><input type="text" name="username" required/></td></tr>
 <tr><td>Email :</td><td><input type="text" name="email" required/></td></tr>
 <tr><td>Password :</td><td><input type="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
 		      title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
 		      required/></td></tr>
-<tr><td>Mobile :</td><td><input type="text" name="mobileNumber" required/></td></tr>
+<tr><td>Mobile :</td><td><input type="text" name="mobile" required/></td></tr>
 <tr><td>Gender :</td><td><input type="radio" name="gender" value="male" required> Male</td><td><input type="radio" name="gender" value="female"> Female</td></tr>
 <tr><td></td><td><input type="hidden" name="role" value="user"></td></tr>
 <tr><td colspan="2"><input type="submit" value="Register"/></td></tr>

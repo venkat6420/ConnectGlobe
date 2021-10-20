@@ -25,12 +25,16 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <title>My Reports</title>
 <style>
 	body{
 		background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgHLPl07I1rQ2sMiWOrvsiUHtu5DMh8jcKvA&usqp=CAU");
 	}
+	
 	
 	.cont{
 		display:flex;
@@ -106,7 +110,19 @@
 		position:relative;
 		float:left;
 	}
+	.m{
+	padding-left:5%;
+	}
+	.a{
+	text-align:right;
 	
+	 
+	 padding-right:2%;
+	}
+	.fa {
+    color: red !important;
+   
+}
 </style>
 </head>
 <body>
@@ -114,19 +130,29 @@
 <div class="uPost" data-toggle="modal" data-target="#myModal" data-id="${userId}">
 			<button class="btn-primary"><i class="material-icons" style="font-size:30px">playlist_add</i> <h5><b>Report Your Issue</b></h5></button>
 </div>
+
 <c:forEach var="st" items="${ReportList}">
-		<div class="box">
+<div class="box">
+		<c:if test = "${roles == 'ADMIN'}">
+		<div class="a">
+       <a href="deleterServlet?id=<c:out value='${st.getrId()}' />">   
+       <i class="fa fa-trash fa-3x a" aria-hidden="true" align="right"></i></a> 
+           
+		</div></c:if>
 			<div class="form-group name">
 				<p><i class="material-icons" style="font-size:36px;color:grey">account_circle</i></p>
 				<h4> ${name}</h4>
+				<hr style="color:black;">
 			</div>
-			<div class="form-group">
+			
+			<div class="form-group m">
 				<h4>${st.getIssue()}</h4>
+			
 			</div>
-			<hr style="color:black;">
-			<hr style="color:black;">
+		
+		
 			<div class="form-group comment">
-				<a href="">View All Suggestions</a>
+				<a href="AllSuggestions?id=${st.getrId()}">View All Suggestions</a>
 			</div>
 		</div>
 </c:forEach>

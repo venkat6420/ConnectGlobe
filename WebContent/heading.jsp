@@ -8,7 +8,18 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
- <style><%@include file="../heading.css"%>
+ <style>
+ .blue-background {
+    background-color: rgb(204,255,255);
+    
+}
+
+
+.imag{
+	border-radius:50%;
+	width:10%;
+	float: left;
+}
  </style> 
 </head>
 <body>

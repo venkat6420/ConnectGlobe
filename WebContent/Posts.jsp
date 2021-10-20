@@ -117,6 +117,16 @@
 		right:10px;
 		top:10px;
 	}
+	.a{
+	text-align:right;
+	
+	 
+	 padding-right:2%;
+	}
+	.fa {
+    color: red !important;
+   
+}
 </style>
 </head>
 <body>
@@ -127,6 +137,11 @@
 	<br><br><br><br><br>
 	<c:forEach var="st" items="${postList}">
 		<div class="box">
+		<div class="a">
+       <a href="deletepServlet?id=<c:out value='${st.getpId()}' />">   
+       <i class="fa fa-trash fa-3x a" aria-hidden="true" align="right"></i></a> 
+           
+		</div>
 			<div class="form-group name">
 				<i class="material-icons" style="font-size:36px;color:grey">account_circle</i></p>
 				<h4> ${name}</h4>

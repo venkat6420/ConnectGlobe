@@ -2,28 +2,30 @@ package com.jsp.classes;
 
 public class registrationClass {
 
-	private int id;
+	private int userId;
 	private String fullname;
 	private String email;
-	private String mobile;
+	private String mobileNumber;
 	private String gender;
 	private String roles;
-	public registrationClass(int id,String fullname, String email, String mobile, String gender, String roles) {
-		super();
-		this.id=id;
-		this.fullname = fullname;
-		this.email = email;
-		this.mobile = mobile;
-		this.gender = gender;
-		this.roles = roles;
-	}
+	private String passsword;
 	
-	public int getId() {
-		return id;
+	public String getPasssword() {
+		return passsword;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setPasssword(String passsword) {
+		this.passsword = passsword;
+	}
+
+	
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public registrationClass() {
@@ -41,12 +43,15 @@ public class registrationClass {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getMobile() {
-		return mobile;
+	
+	public String getMobileNumber() {
+		return mobileNumber;
 	}
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
 	}
+
 	public String getGender() {
 		return gender;
 	}
@@ -59,10 +64,27 @@ public class registrationClass {
 	public void setRoles(String roles) {
 		this.roles = roles;
 	}
+
 	@Override
 	public String toString() {
-		return "registrationClass [fullname=" + fullname + ", email=" + email + ", mobile=" + mobile + ", gender="
-				+ gender + ", roles=" + roles + "]";
+		return "registrationClass [userId=" + userId + ", fullname=" + fullname + ", email=" + email + ", mobileNumber="
+				+ mobileNumber + ", gender=" + gender + ", roles=" + roles + ", passsword=" + passsword + "]";
 	}
+
+	public registrationClass(int userId, String fullname, String email, String mobileNumber, String gender,
+			String roles, String passsword) {
+		super();
+		this.userId = userId;
+		this.fullname = fullname;
+		this.email = email;
+		this.mobileNumber = mobileNumber;
+		this.gender = gender;
+		this.roles = roles;
+		this.passsword = passsword;
+	}
+
+	
+	
+	
 	
 }
